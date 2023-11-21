@@ -1,0 +1,146 @@
+---
+title: "Fantasy Football Motivosity Update"
+author: '[Brody Moore](mailto:bmoore1@snapfinance.com)'
+date: "`r format(Sys.time(),'%B %d, %Y @ %I:%M%p')`"
+output:
+  rmdformats::readthedown:
+    highlight: tango
+    code_folding: hide
+    toc_depth: 3
+    use_bookdown: TRUE
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+
+library(dplyr)
+library(snapdragon)
+library(highcharter)
+library(lubridate)
+library(pins)
+library(reactable)
+opts <- getOption("highcharter.lang")
+opts$thousandsSep <- ","
+options(highcharter.lang = opts)
+
+## Global options
+opts_chunk$set(
+  # eval = FALSE, # uncomment this when first publishing to add credentials
+  echo = TRUE,
+  cache = FALSE,
+  prompt = FALSE,
+  tidy = FALSE,
+  comment = NA,
+  message = FALSE,
+  warning = FALSE
+)
+
+snapdragon::sd_board_register(environ = "prod")
+```
+
+```{r load data}
+results_data <- pin_get("results_pin_2023","rsconnect")
+
+paid_dues <- results_data$league_setup %>% 
+  select(person, dues_paid) %>% 
+  arrange(desc(dues_paid))
+
+```
+
+# Are You Current With League Dues? {.tabset}
+
+## Monthly Motivosity
+
+true means that the $5 Motivosity pool for that month has been paid by the given individual
+
+```{r monthly motivosity}
+reactable(
+  results_data$monthly_motivosity %>% select(-November),
+  columns = list(
+    September = colDef(
+      name = "September Paid",
+      style = function(value, index) {
+        if (results_data$monthly_motivosity$September[index] == TRUE) {
+          color <- "green"
+        } else if (results_data$monthly_motivosity$September[index] == FALSE) {
+          color <- "#CC0000"
+        }
+        list(color = color)
+      }
+    ),
+    October = colDef(
+      name = "October Paid",
+      style = function(value, index) {
+        if (results_data$monthly_motivosity$October[index] == TRUE) {
+          color <- "green"
+        } else if (results_data$monthly_motivosity$October[index] == FALSE) {
+          color <- "#CC0000"
+        }
+        list(color = color)
+      }
+    )
+  )
+)
+```
+
+## League Buy In
+ 
+$20 League Buy In
+```{r league buy in}
+reactable(
+  paid_dues,
+  columns = list(
+    dues_paid = colDef(
+      name = "Buy In Paid",
+      style = function(value, index) {
+        if (paid_dues$dues_paid[index] == TRUE) {
+          color <- "green"
+        } else if (paid_dues$dues_paid[index] == FALSE) {
+          color <- "#CC0000"
+        }
+        list(color = color)
+      }
+    )
+  )
+)
+
+```
+
+# Previous Month Standings
+
+```{r Previous month standings}
+reactable(
+  results_data$previous_month_standings
+)
+```
+
+# Current Month Standings
+
+```{r current month standings}
+reactable(
+  results_data$current_month_standings
+)
+```
+
+# All Time Results 
+
+```{r all time results}
+altered_full <- results_data$full_fantasy_results
+
+names(altered_full) <- gsub("_wins", " Wins", gsub("_pts", " Points", names(altered_full)))
+
+reactable(
+  altered_full,
+  columns = list(
+   person = colDef(
+     sticky = "left"
+   )
+  )
+)
+```
+
+
+
+
+

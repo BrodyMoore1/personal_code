@@ -1,0 +1,13 @@
+name: motivosity_status_report
+title: Motivosity Status Report
+username: bmoore1
+account: bmoore1
+server: rstudio-connect.snapfinance.com
+hostUrl: https://rstudio-connect.snapfinance.com/__api__
+appId: 3817
+bundleId: 1253287
+url: https://rstudio-connect.snapfinance.com/ff_motivosity/
+when: 1700587726.11953
+lastSyncTime: 1700587726.11954
+asMultiple: FALSE
+asStatic: FALSE

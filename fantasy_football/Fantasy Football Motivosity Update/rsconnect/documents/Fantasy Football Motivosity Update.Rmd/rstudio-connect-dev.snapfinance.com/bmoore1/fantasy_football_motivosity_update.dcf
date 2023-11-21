@@ -1,0 +1,13 @@
+name: fantasy_football_motivosity_update
+title: Fantasy Football Motivosity Update
+username: bmoore1
+account: bmoore1
+server: rstudio-connect-dev.snapfinance.com
+hostUrl: https://rstudio-connect-dev.snapfinance.com/__api__
+appId: 203
+bundleId: 3528
+url: https://rstudio-connect-dev.snapfinance.com/content/605b2e9a-b68b-4aa3-8a8d-06de85a58ab8/
+when: 1696462896.65715
+lastSyncTime: 1696462896.65716
+asMultiple: FALSE
+asStatic: FALSE
