@@ -56,7 +56,7 @@ true means that the $5 Motivosity pool for that month has been paid by the given
 
 ```{r monthly motivosity}
 reactable(
-  results_data$monthly_motivosity %>% select(-November),
+  results_data$monthly_motivosity,
   columns = list(
     September = colDef(
       name = "September Paid",
@@ -75,6 +75,17 @@ reactable(
         if (results_data$monthly_motivosity$October[index] == TRUE) {
           color <- "green"
         } else if (results_data$monthly_motivosity$October[index] == FALSE) {
+          color <- "#CC0000"
+        }
+        list(color = color)
+      }
+    ),
+    November = colDef(
+      name = "November Paid",
+      style = function(value, index) {
+        if (results_data$monthly_motivosity$November[index] == TRUE) {
+          color <- "green"
+        } else if (results_data$monthly_motivosity$November[index] == FALSE) {
           color <- "#CC0000"
         }
         list(color = color)

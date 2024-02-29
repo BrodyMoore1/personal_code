@@ -5,9 +5,9 @@ account: bmoore1
 server: rstudio-connect.snapfinance.com
 hostUrl: https://rstudio-connect.snapfinance.com/__api__
 appId: 3817
-bundleId: 1253287
+bundleId: 1261768
 url: https://rstudio-connect.snapfinance.com/ff_motivosity/
-when: 1700587726.11953
-lastSyncTime: 1700587726.11954
+when: 1701808866.66728
+lastSyncTime: 1701808866.66731
 asMultiple: FALSE
 asStatic: FALSE

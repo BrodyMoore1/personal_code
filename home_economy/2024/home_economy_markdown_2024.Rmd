@@ -1,0 +1,754 @@
+---
+title: "2024 Home Economy"
+author: '[Brody Moore](mailto:bmoore1@snapfinance.com)'
+date: "`r format(Sys.time(),'%B %d, %Y @ %I:%M%p')`"
+output:
+  rmdformats::readthedown:
+    highlight: tango
+    toc_depth: 3
+    use_bookdown: TRUE
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+
+library(tidyverse)
+library(reactable)
+library(highcharter)
+library(stringr)
+library(shiny)
+library(lubridate)
+opts <- getOption("highcharter.lang")
+opts$thousandsSep <- ","
+options(highcharter.lang = opts)
+
+## Global options
+opts_chunk$set(
+  # eval = FALSE, # uncomment this when first publishing to add credentials
+  echo = FALSE,
+  cache = FALSE,
+  prompt = FALSE,
+  tidy = FALSE,
+  comment = NA,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r define_helpful_functions}
+
+breakdown_function <- function(data) {
+  data %>%
+  mutate(place = if_else(category == "restaurant", "restaurant", place)) %>% 
+  group_by(category, place) %>% 
+  summarise(amt_spent = sum(amount)) %>% 
+  group_by(category) %>% 
+  mutate(category_spent = sum(amt_spent)) %>% 
+  arrange(desc(category_spent), desc(amt_spent))
+}
+
+category_function <- function(data, month) {
+  summarised_data <- data %>% 
+    group_by(category) %>% 
+    summarise(!!(paste0("amt_spent_",{{ month }})) := sum(amount)) 
+  
+  summarised_data %>% 
+    arrange(desc(UQ(sym(names(summarised_data)[2]))))
+}
+
+prep_roll_up_function <- function(data) {
+  fixed_categories <- c("subscription", "house_essential", "subscripiton", "family", "renewal_fee", "house_payment", "subscription", "car")
+  
+  data %>% 
+    group_by(category, place) %>% 
+    summarise(amount = sum(amount)) %>% 
+    ungroup() %>% 
+    mutate(summarised_category = if_else(category %in% fixed_categories, "Fixed", "Controlable"))
+}
+
+wrap_up_reactable <- function(data) {
+  prepped_data <- prep_roll_up_function(data)
+  
+  reactable(
+    prepped_data ,
+    groupBy = c("summarised_category", "category"),
+    columns = list(
+      amount = colDef(
+        name = "Amount",
+        aggregate = "sum", 
+        format = colFormat(currency = "USD"),
+        footer = function(values) sprintf("$%.2f", sum(values))
+      ),
+      place = colDef(name = "Place"),
+      category = colDef(name = "Category"),
+      summarised_category = colDef(name = "Summarised Category", footer = "Total")
+    ),
+    defaultSorted = list(amount = "desc")
+  )
+}
+
+```
+
+<!-- Income Documentation -->
+
+```{r income}
+# Things like making money from a category that we already spent money on doesn't go in here. Only earned income from salary or side gigs.
+
+num_months_that_occured <- month(today())
+
+reoccuring_income <- tibble(
+  month = month.abb[1:num_months_that_occured],
+  source = rep("snap", num_months_that_occured),
+  amount = rep((3336 + 588) * 2, num_months_that_occured)
+)
+
+variable_income <- tribble(
+  ~month,  ~source, ~amount,
+  "Apr",   "snap",   8000,
+  "Nov",   "uepc",    930,
+  "Oct",   "uepc",   1113,
+  "Dec",   "uepc",    712,
+  "Dec",   "refund", 1800,
+  "Dec",   "xmas",   1550
+)
+
+stacked_income <- reoccuring_income %>% 
+  bind_rows(variable_income) %>% 
+  arrange(month)
+  
+combined_income <- stacked_income %>% 
+  group_by(month) %>% 
+  summarise(amount = sum(amount)) %>%
+  ungroup() %>% 
+  mutate(month = factor(month, levels = month.abb)) %>% 
+  arrange(month)
+
+#combined_income %>% 
+#  summarise(sum(amount))
+
+```
+
+<!-- Monthly Data Load -->
+
+```{r jan}
+# jan Purchases -------------------------------------------------------
+
+jan_purchases <- tribble(
+  ~place,          ~amount, ~category,
+  "krystal",        116.00, "subscription",
+  "costco",         166.61, "house_var",
+  "dominion",       132.34, "house_essential",
+  "winco",           27.92, "grocery",
+  "hoa",             60.00, "house_essential",
+  "costco",           2.90, "restaurant",
+  "ginnys",           7.54, "restaurant",
+  "zupas",            9.77, "restaurant",
+  "zupas",           13.49, "restaurant",
+  "great_clips",     26.00, "personal",
+  "maverik",          2.26, "restaurant",
+  "walmart",         16.13, "misc",
+  "super_chix",      17.26, "restaurant",
+  "maceys",          27.84, "grocery",
+  "hobby_lobby",     36.85, "bunco",
+  "chilis",           6.47, "restaurant",
+  "amazon",          16.08, "subscription",
+  "maverik",         32.15, "gas",
+  "phillips_66",      7.80, "restaurant",
+  "eagle_point",    126.01, "snowboarding",
+  "creamery",        15.17, "restaurant",
+  "eagle_point",      5.32, "snowboarding",
+  "maverik",         28.83, "gas",
+  "sinclair_oil",    48.14, "gas",
+  "zurchers",        11.47, "bunco",
+  "walmart",         18.15, "bunco",
+  "chilis",          12.94, "bunco",
+  "bath_body_works", 10.10, "bunco",
+  "valvoline",       44.98, "car",
+  "brutus_loan",    340.00, "car",
+  "brutus_reg",     151.00, "car",
+  "maverik",          2.31, "restaurant",
+  "zupas",           26.98, "restaurant",
+  "groupon",         71.25, "car",
+  "walmart",         26.21, "house_var",
+  "pho_cali",        15.00, "restaurant",
+  "panda_express",    7.00, "restaurant",
+  "maceys",          19.62, "grocery",
+  "amazon",         122.91, "baby",
+  "sams_club",       29.68, "gas",
+  "sams_club",      127.80, "baby",
+  "thai_house",      27.97, "restaurant",
+  "panda_express",    5.83, "restaurant",
+  "chick_fila",      13.61, "restaurant",
+  "amazon",         171.19, "josie_bday",
+  "amazon",           9.58, "misc",
+  "walmart",         76.79, "misc",
+  "lucky_slice",     16.25, "restaurant",
+  "smiths",          45.90, "grocery",
+  "sierra",         123.04, "clothes",
+  "sams_club",       21.15, "gas",
+  "walmart",         13.87, "misc",
+  "in_n_out",         7.99, "restaurant",
+  "homegoods",       10.69, "house_var",
+  "adobe",           10.69, "subscription",
+  "maceys",           9.67, "grocery",
+  "amazon",          38.92, "misc",
+  "tj_maxx",         29.94, "clothes",
+  "target",          33.16, "misc",
+  "locals",          26.74, "personal",
+  "five_guys",       26.74, "restaurant",
+  "chick_fila",      10.56, "restaurant",
+  "smiths",          30.40, "grocery",
+  "zupas",           26.98, "restaurant",
+  "apple",            7.50, "subscription",
+  "target",          21.45, "misc",
+  "mandarin_garden", 12.69, "restaurant",
+  "ring",            39.99, "subscription",
+  "ramen_haus",      28.00, "restaurant",
+  "maverik",         28.33, "gas",
+  "harmons",         16.18, "grocery",
+  "twirl",          135.03, "clothes",
+  "nielsens",         8.19, "restaurant",
+  "roku",            15.01, "subscription",
+  "chip",            13.93, "restaurant",
+  "quantum_fiber",   75.00, "house_essential",
+  "rocky_mountain",  44.72, "house_essential",
+  "nibley_city",    107.49, "house_essential",
+  "planet_fitness",  10.70, "personal_development",
+  "winco",           17.41, "grocery",
+  "mortgage",      3487.68, "house_payment",
+  "ginnys",           7.54, "restaurant",
+  "great_harvest",    5.71, "restaurant",
+  "jamba",            7.23, "restaurant",
+  "dominos",         19.43, "restaurant",
+  "panda_express",   18.04, "restaurant",
+  "apple",            2.99, "subscription",
+  "quick_quack",     41.99, "subscription",
+  "old_navy",        45.96, "baby",
+  "amazon",          26.74, "misc",
+  "sams_club",      112.17, "misc",
+  "noodles",         24.08, "restaurant",
+  "in_n_out",        15.98, "restaurant",
+  "drury_inn",      232.80, "vacation_san_antonio",
+  "wendys",           2.48, "restaurant",
+  "tubby_todd",      66.35, "baby",
+  "sp_kloudy_kids",  34.32, "baby",
+  "maverik",         24.17, "gas",
+  "harmons",         23.69, "grocery",
+  "sams_club",        7.19, "grocery",
+  "raising_canes",   12.94, "restaurant",
+  "ihc",             21.15, "new_baby",
+  "apple",           10.99, "subscription",
+  "nothing_bundt",   80.63, "josie_bday",
+  "taco_time",       19.07, "restaurant",
+  "zurchers",        23.65, "josie_bday",
+  "chick_fila",      70.63, "josie_bday",
+  "jamba",           15.54, "restaurant",
+  "zupas",           14.03, "restaurant",
+  "super_chix",       9.49, "restaurant",
+  "locals",          17.11, "baby",
+  "maverik",         20.76, "gas",
+  "student_loans",  336.10, "debt",
+  "allstate",        11.50, "house_essential"
+) %>% 
+  mutate(month = "jan")
+
+jan_breakdown <- breakdown_function(jan_purchases)
+
+jan_categories <- category_function(jan_purchases, "jan")
+
+
+```
+
+```{r feb}
+# feb Purchases -------------------------------------------------------
+
+feb_purchases <- tribble(
+  ~place,          ~amount, ~category,
+  "interval",        79.00, "vacation_san_antonio",
+  "maverik",          2.46, "vacation_san_antonio",
+  "unita_brewing",    6.53, "vacation_san_antonio",
+  "whataburger",     17.94, "vacation_san_antonio",
+  "smiths",           8.03, "personal",
+  "maverik",         30.38, "gas",
+  "in_n_out",         3.46, "vacation_san_antonio",
+  "harmons",          2.77, "personal",
+  "cafe_rio",        11.27, "restaurant",
+  "botanical_garden",12.00, "vacation_san_antonio",
+  "voodoo_doughnut", 11.75, "vacation_san_antonio",
+  "terry_blacks",    44.37, "vacation_san_antonio",
+  "sonic",            5.70, "vacation_san_antonio",
+  "p_terry",          3.70, "vacation_san_antonio",
+  "mi_casa",         19.38, "vacation_san_antonio",
+  "scruffys",         6.40, "vacation_san_antonio",
+  "target",          63.82, "vacation_san_antonio",
+  "parking",         10.00, "vacation_san_antonio",
+  "amazon",          16.08, "vacation_san_antonio",
+  "cici_pizza",       9.19, "vacation_san_antonio",
+  "target",         104.56, "vacation_san_antonio",
+  "kfc",              3.56, "vacation_san_antonio",
+  "jersey_mikes",    11.73, "vacation_san_antonio",
+  "heb_grocery",     70.67, "vacation_san_antonio",
+  "bucees",          85.95, "vacation_san_antonio",
+  "thai_hut",        37.65, "vacation_san_antonio",
+  "taqueria_nuevo",  14.06, "vacation_san_antonio",
+  "shell_oil",       18.73, "vacation_san_antonio",
+  "shell",            5.60, "vacation_san_antonio",
+  "casa_rio",        50.26, "vacation_san_antonio",
+  "parking",         15.00, "vacation_san_antonio",
+  "dunkin",           7.56, "vacation_san_antonio",
+  "san_antonio_zoo", 56.24, "vacation_san_antonio",
+  "viva_satx",       14.06, "vacation_san_antonio",
+  "quiktrip",         8.54, "vacation_san_antonio",
+  "parking",         25.00, "vacation_san_antonio",
+  "five_and_dime",   11.90, "vacation_san_antonio",
+  "dough_pizza",     43.00, "vacation_san_antonio",
+  "parking",         15.00, "vacation_san_antonio",
+  "henry_puffy_taco",23.00, "vacation_san_antonio",
+  "chick_fila",       4.93, "vacation_san_antonio",
+  "auntie_annes",    14.58, "vacation_san_antonio",
+  "voodoo_doughnut",  7.00, "vacation_san_antonio",
+  "target",          60.08, "vacation_san_antonio",
+  "sichuan_house",   45.98, "vacation_san_antonio",
+  "parking",         10.00, "vacation_san_antonio",
+  "party_city",      32.91, "vacation_san_antonio",
+  "marble_slab",     12.97, "vacation_san_antonio",
+  "mattengas_pizza", 35.16, "vacation_san_antonio",
+  "soup_peddler",    21.37, "vacation_san_antonio",
+  "popeyes",         11.24, "vacation_san_antonio",
+  "mi_casa",         32.42, "vacation_san_antonio",
+  "girl_scout",       5.00, "vacation_san_antonio",
+  "bucees",          22.77, "vacation_san_antonio",
+  "bucees",          43.02, "vacation_san_antonio",
+  "la_quinta",      106.41, "vacation_san_antonio",
+  "ffb",             49.99, "football",
+  "exxonmobil",       4.97, "vacation_san_antonio",
+  "austin_airport",   5.40, "vacation_san_antonio",
+  "cutler_cookie",   17.59, "restaurant",
+  "yeezy",           36.40, "clothes",
+  "adobe",           10.69, "subscription",
+  "dominion",       139.91, "house_essential"
+) %>% 
+  mutate(month = "feb")
+
+feb_breakdown <- breakdown_function(feb_purchases)
+
+feb_categories <- category_function(feb_purchases, "feb")
+
+
+```
+
+<!-- Data Preparation -->
+
+
+```{r Yearly Aggregate Data Prep}
+
+# Aggregate Data
+   
+all_months_stacked <- jan_purchases %>% 
+  bind_rows(feb_purchases) %>% 
+  mutate(
+    place = case_when(place == "wal_mart" ~ "walmart",
+                      TRUE ~ place)
+  )
+
+wrap_up_categories <- tribble(
+  ~current_category        , ~new_category,
+  "brody_bday"             , "holidays",
+  "maddie_bday"            , "holidays",
+  "halloween"              , "holidays",
+  "mothers_day"            , "holidays",
+  "thanksgiving"           , "holidays",
+  "christmas"              , "holidays",
+  "anniversary"            , "holidays",
+  "black_friday"           , "holidays",
+  "mom_bday"               , "holidays",
+  "jessi_bday"             , "holidays",
+  "josie_bday"             , "holidays",   
+  "photography"            , "hobby",
+  "football"               , "hobby",
+  "golf"                   , "hobby",
+  "barbie_party"           , "hobby",
+  "bunco"                  , "hobby",
+  "snowboarding"           , "hobby",
+  "vacation"               , "vacations",
+  "vacation_branson"       , "vacations",
+  "vacation_cali"          , "vacations", 
+  "vacation_moab"          , "vacations", 
+  "vacation_park_city"     , "vacations",         
+  "vacation_st_george"     , "vacations",         
+  "vacation_waco"          , "vacations",    
+  "vacation_yellowstone"   , "vacations", 
+  "yellowstone_vacation2"  , "vacations",
+  "vacation_san_antonio"   , "vacations",
+  "vacation_carolina"      , "vacations",
+  "becks_kids"             , "family",
+)
+
+
+
+
+categories_together <- jan_categories %>% 
+  bind_rows(feb_categories)
+
+categories_together_cleaned <- categories_together %>%
+  left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
+  mutate(category = coalesce(new_category, category)) %>% 
+  select(-new_category) %>% 
+  group_by(category) %>% 
+  summarise(across(where(is.numeric), ~sum(.x, na.rm = TRUE))) %>% 
+  ungroup() %>% 
+  mutate(across(where(is.numeric), ~replace_na(.,0))) %>% 
+  mutate(total_amt_spent = rowSums(across(starts_with("amt_spent")), na.rm = TRUE),
+         avg_amt_spent = rowMeans(across(starts_with("amt_spent")), na.rm = TRUE),
+         avg_amt_spent = round(avg_amt_spent, 2)
+         ) %>% 
+  arrange(desc(total_amt_spent))
+
+# View overall what we've been doing
+names(categories_together_cleaned) <- str_to_title(gsub("_"," ", gsub("amt_spent_","",names(categories_together_cleaned))))
+```
+
+```{r Current Update Data Creation}
+
+```
+
+```{r Vacation Breakdowns}
+relevant_vactions_2023_info <- tribble(
+  ~place,            ~amount, ~category,     
+  "delta",            136.30, "vacation_carolina",
+  "delta",            286.30, "vacation_carolina",
+  "delta",            250.00, "vacation_carolina",
+  "interval",         198.00, "vacation_carolina",
+  "southwest",       345.18, "vacation_san_antonio",
+  "interval",        229.00, "vacation_san_antonio"
+) %>% 
+  mutate(month = "2023")
+
+
+vacation_breakdown <- all_months_stacked %>% 
+  bind_rows(relevant_vactions_2023_info) %>% 
+  left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
+  filter(new_category == "vacations") %>% 
+  group_by(category) %>% 
+  mutate(total_amt = sum(amount)) %>% 
+  ungroup() %>% 
+  arrange(desc(total_amt), desc(amount)) %>% 
+  mutate(
+    category = str_to_title(trimws(gsub("vacation","",gsub("_"," ", category))))
+  ) %>% 
+  select(category, place, amount) 
+
+
+```
+
+```{r Holiday Breakdowns}
+holiday_breakdown <- all_months_stacked %>% 
+  left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
+  filter(new_category == "holidays") %>% 
+  group_by(category) %>% 
+  mutate(total_amt = sum(amount)) %>% 
+  ungroup() %>% 
+  arrange(desc(total_amt)) %>% 
+  select(-new_category, -month, - total_amt)
+
+```
+
+<!-- One Off Data Preparation -->
+
+```{r Large Expense Planning}
+
+
+```
+
+```{r recover, eval=FALSE}
+
+# Credit Card Debt
+cc_debt <- 5071.05
+
+# Amount in Bank Account
+current_bank <- 1986.02
+
+# Amount coming in Dec 1st
+monthly_pay <- 3736*2
+
+
+# Amount will spend (house_payment + house_essential + subscription + car payment + formula/diapers + gas)
+spending <- 3487.68 + 360 + 185 + 340 + 200 + 300
+
+# Amount we have to work with
+amount_to_work_with <- monthly_pay*3 + current_bank - spending*3
+
+amount_to_work_with - cc_debt
+
+
+```
+
+<!-- Data Display -->
+
+# Year To Date
+```{r create ytd reactable}
+yearly_reactable <- categories_together_cleaned %>% 
+  mutate(Category = str_to_title(gsub("_"," ",Category))) %>% 
+  reactable(
+    height = 725,
+    defaultPageSize = 50, # Display all rows
+    columns = list(
+      Category          = colDef(sticky = "left",footer = "Total", format = colFormat(currency = "USD"), filterable = TRUE),
+      `Total Amt Spent` = colDef(sticky = "right", footer = function(values) sprintf("$%.2f", sum(values)), format = colFormat(currency = "USD")),
+      `Avg Amt Spent`   = colDef(sticky = "right", footer = function(values) sprintf("$%.2f", sum(values)), format = colFormat(currency = "USD")),
+      Jan       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
+      Feb       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
+    )
+  )
+```
+
+```{r Yearly Aggregate Display}
+yearly_reactable
+```
+
+# Time Comparisons {.tabset}
+## Month
+
+Previous Month {Left} vs Current Month {Right}
+
+```{r Month Comparison}
+fluidRow(
+  column(6, wrap_up_reactable(jan_purchases)),
+  column(6, wrap_up_reactable(feb_purchases))
+)
+
+```
+
+
+# Category Review {.tabset}
+
+## Vacations {.tabset}
+
+### Overall
+
+```{r overall}
+reactable(
+  vacation_breakdown,
+  groupBy = "category",
+  columns = list(
+    amount = colDef(aggregate = "sum", 
+                    format = colFormat(currency = "USD"),
+                    footer = function(values) sprintf("$%.2f", sum(values))),
+    category = colDef(footer = "Total")
+  )
+)
+```
+
+## Holidays
+
+```{r holiday review}
+reactable(
+  holiday_breakdown,
+  groupBy = "category",
+  columns = list(
+    amount = colDef(aggregate = "sum", 
+                    format = colFormat(currency = "USD"), 
+                    footer = function(values) sprintf("$%.2f", sum(values))),
+    category = colDef(footer = "Total")
+  )
+)
+```
+
+## Subscriptions
+
+```{r subscription review}
+all_months_stacked %>% 
+  filter(category == "subscription") %>% 
+  select(-category) %>% 
+  mutate(amount2 = amount) %>% 
+  select(amount2, amount, everything()) %>% 
+  mutate(place = str_to_title(gsub("_", " ", place))) %>% 
+  reactable(
+    groupBy = c("place", "month"),
+    columns = list(
+      place = colDef(name = "Place", footer = "Total"),
+      amount = colDef(name = "Total Amount Spent", 
+                      aggregate = "sum", 
+                      format = colFormat(currency = "USD"),
+                      footer = function(values) sprintf("$%.2f", sum(values))
+                      ),
+      amount2 = colDef(name = "Avg Amount Spent", 
+                       aggregate = "mean", 
+                       format = colFormat(currency = "USD")
+                       )
+    ),
+    defaultSorted = list(amount = "desc"),
+    height = 500,
+    pagination = FALSE
+  ) 
+```
+
+<!-- Random Other Things -->
+
+```{r Debts, eval = FALSE}
+debts_df <- tribble(
+  ~who,             ~amount, ~min_payment,  ~category,
+  "Mick",              7000,            0,  "Fence",
+  "Mick",              2000,            0,  "Marriott_Weeks",
+  "Aidvantage",        2041,          137,  "Student_Loans",
+  "Aidvantage",       11883,           23,  "Student_Loans",
+  "America_First",     9912,          340,  "Car_Brutus",
+  "Church",           24300,            0,  "Tithing", # As of End of August 23
+  "American_Express",  1106,          400,  "Credit_Card"
+)
+```
+
+```{r Sandbox, eval = FALSE}
+# California Vacation
+
+april_purchases %>% 
+  filter(category == "vacation_cali") %>% 
+  mutate(
+    sub_category = case_when(place == "disney_land" & amount > 200 ~ "disney_tickets",
+                             place == "disney_land" & amount <= 200 ~ "disney_food",
+                             place == "target" ~ "misc",
+                             TRUE ~ "food"),
+    disney = if_else(place == "disney_land", "disney", "not_disney")
+  ) %>% 
+  group_by(
+    place,
+    disney,
+    sub_category
+  ) %>% 
+  summarise(
+    amt_spent = sum(amount)
+  ) %>% 
+  reactable(
+    groupBy = c("disney", "sub_category", "place"),
+    columns = list(
+      amt_spent = colDef(
+        aggregate = "sum", 
+        format = colFormat(currency = "USD"),
+        footer = function(values) sprintf("$%.2f", sum(values))
+      ),
+      disney = colDef(footer = "Total")
+    ),
+    defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
+  )
+
+# From Jan - Aug 15 of the misc purchases are from walmart
+
+
+# Misc Analysis
+
+all_months_stacked %>% 
+  filter(category == "misc") %>%
+  mutate(month = factor(month, levels = ( all_months_stacked %>% distinct(month) %>% pull()))) %>% 
+  group_by(month,place) %>% 
+  summarise(
+    num_times = n(),
+    total_amount = sum(amount)
+  ) %>% 
+  ungroup() %>% 
+  pivot_wider(
+    names_from = place,
+    values_from = c(num_times,total_amount)
+  )
+
+# Attempt at figuring out how much we should spend
+
+
+# Flexible Costs (ranked in order of most important & on going to least)
+  # baby ~ Historical Monthly Average $700
+  # house_var ~ Historical Monthly Average $1250 
+  # personal ~ Historical Monthly Average $150
+  # date ~ Historical Monthly Average $75
+  # misc (Need to clean this up in jan)
+  # clothes (This one shouldn't be as major going forward) {Need to discuss reasonable clothes budget with Maddie}
+  # football (This one is all paid for)
+  # photography (Busness expense & expansion tbd...)
+
+  flexible_categories <- tribble(
+    ~category,     ~expected_amt, ~flexible,
+    "baby",        350,           "flexible",
+    "clothes",     300,           "flexible",
+    "house_var",   150,           "flexible",
+    "personal",    100,           "flexible",
+    "misc",        250,           "flexible",
+    "date",        50,            "flexible"
+  )
+
+# Vacations
+  categories_together %>% 
+    filter(grepl("vacation", category)) %>% 
+    select(category, total_amt_spent)
+
+  
+# Food Costs
+  # restaurant 
+  # grocery
+  
+  wide_food <- all_months_stacked %>% 
+    filter(category %in% c("restaurant", "grocery")) %>% 
+    group_by(category, month) %>% 
+    summarise(amt_spent = sum(amount)) %>% 
+    ungroup() %>% 
+    pivot_wider(
+      names_from = "category",
+      values_from = "amt_spent"
+    )
+    
+  
+  all_months_stacked %>% 
+    filter(category %in% c("restaurant", "grocery")) %>% 
+    mutate(category = "food") %>% 
+    group_by(category, month) %>% 
+    summarise(amt_spent = sum(amount)) %>% 
+    ungroup() %>% 
+    left_join(wide_food, by = "month") %>% 
+    arrange(desc(amt_spent)) %>% 
+    select(
+      month,
+      grocery,
+      restaurant,
+      "total_amt_spent" = amt_spent
+    )
+  
+  # Reasonable Food Goal Could Be ?$600?
+  
+  
+# Inflexable Costs
+  # min_house_payment  $3500
+  # house_essential ~ $400
+  # car ~ $400
+  # gas ~ $250
+  # phone ~ $100
+  # subscription ~ $75
+  # BUFFER - $275
+  
+  inflexible_categories <- tribble(
+    ~category,         ~expected_amt, ~flexible,
+    "house_essential", 400,           "inflexible",
+    "car",             400,           "inflexible",
+    "gas",             250,           "inflexible",
+    "subscription",    100,           "inflexible",
+    "subscription",    75,            "inflexible",
+    "buffer",          275,           "inflexible",
+    "restaurant",      300,           "inflexible",
+    "grocery",         300,           "inflexible"
+  )
+  
+  # total inflexable: $3500 + $1500 = $5000
+  
+  # Overall including food: $5000 + $600 = $5600
+  
+  
+# Amount I bring in per month (snap base pay)
+  # 8200
+  
+# Inflexable minus amount brought in
+  8200 - 5600
+  
+  # Amount left over for Flexible Costs $2600!
+  
+
+
+```
+
+

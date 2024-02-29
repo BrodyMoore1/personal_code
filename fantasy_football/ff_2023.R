@@ -28,8 +28,8 @@ motivosity_participants <- league_setup %>% filter(monthly_motivosity_particpant
 fantasy_scores <- tribble(
   ~person,   ~month, ~tot_wins,  ~tot_pts, ~motivosity_paid,     # ~wins_september, ~wins_october, ~pts_september, ~pts_october,
   # September
-  "Brody",        9,         4,       602,             TRUE,     #               3,               4,             530,            1000, 
-  "Nick",         9,         3,       534,             TRUE,     #                3,               6,             527,            1008, 
+  "Brody",        9,         4,       602,            TRUE,     #               3,               4,             530,            1000, 
+  "Nick",         9,         3,       534,            TRUE,     #                3,               6,             527,            1008, 
   "Magon",        9,         3,       507,            TRUE,      #                3,               6,             518,            1086, 
   "Hoonie",       9,         2,       518,            FALSE,      #               3,               6,             498,             991, 
   "Gus",          9,         2,       474,            TRUE,      #                2,               3,             508,             930, 
@@ -50,16 +50,16 @@ fantasy_scores <- tribble(
   "Kaivan",       10,        2,        953,            TRUE,
   "Nate",         10,        2,        861,            TRUE,
   # # Nov Example    
-  "Brody",        11,        8,       1579,            FALSE,       #               3,               4,             530,            1000, 
-  "Nick",         11,        7,       1487,            FALSE,      #                3,               6,             527,            1008, 
-  "Magon",        11,        5,       1304,            FALSE,      #                3,               6,             518,            1086, 
-  "Hoonie",       11,        5,       1395,            FALSE,      #               3,               6,             498,             991, 
-  "Gus",          11,        8,       1418,            FALSE,      #                2,               3,             508,             930, 
-  "Jason",        11,        3,       1230,            FALSE,      #                2,               5,             485,             983, 
-  "Kevin",        11,        6,       1389,            FALSE,      #                1,               2,             408,             854, 
-  "Conner",       11,        5,       1259,            FALSE,      #               0,               3,             523,            1157, 
-  "Kaivan",       11,        5,       1402,            FALSE,
-  "Nate",         11,        3,       1159,            FALSE,
+  "Brody",        11,        10,       1883,            TRUE,       #               3,               4,             530,            1000, 
+  "Nick",         11,        7,       1753,            FALSE,      #                3,               6,             527,            1008, 
+  "Magon",        11,        6,       1545,            FALSE,      #                3,               6,             518,            1086, 
+  "Hoonie",       11,        7,       1674,            FALSE,      #               3,               6,             498,             991, 
+  "Gus",          11,        9,       1676,            TRUE,      #                2,               3,             508,             930, 
+  "Jason",        11,        3,       1390,            FALSE,      #                2,               5,             485,             983, 
+  "Kevin",        11,        7,       1654,            FALSE,      #                1,               2,             408,             854, 
+  "Conner",       11,        6,       1488,            FALSE,      #               0,               3,             523,            1157, 
+  "Kaivan",       11,        7,       1754,            TRUE,
+  "Nate",         11,        3,       1400,            FALSE,
 )
 
 #month_result_list <- list()

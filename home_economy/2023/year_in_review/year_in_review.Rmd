@@ -1,0 +1,368 @@
+---
+title: "2023 in Review"
+author: '[Brody Moore](mailto:bmoore1@snapfinance.com)'
+date: "`r format(Sys.time(),'%B %d, %Y @ %I:%M%p')`"
+output:
+  rmdformats::readthedown:
+    highlight: tango
+    toc_depth: 3
+    use_bookdown: TRUE
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+
+library(dplyr)
+library(snapdragon)
+library(highcharter)
+library(lubridate)
+library(pins)
+library(reactable)
+library(shiny) 
+library(shinydashboard)
+library(shinyWidgets)
+library(wesanderson)
+library(stringr)
+library(manipulateWidget)
+opts <- getOption("highcharter.lang")
+opts$thousandsSep <- ","
+options(highcharter.lang = opts)
+
+## Global options
+opts_chunk$set(
+  # eval = FALSE, # uncomment this when first publishing to add credentials
+  echo = FALSE,
+  cache = FALSE,
+  prompt = FALSE,
+  tidy = FALSE,
+  comment = NA,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r helpful functions}
+custom_tooltip <- function(hc,numberFormat = NULL,digits = 0,preappend="",append="") {
+  if(length(numberFormat) == 1) {
+    if (numberFormat == 'dollar') {
+      hc_tooltip(
+        hc,
+        pointFormat=paste0(
+          '<span style="color:{point.color}">\u25CF</span> {series.name} <b>${point.y:,.',
+          digits,
+          'f}',preappend,'</b><br>',
+          append
+        )
+      )
+    }
+    else {
+      hc_tooltip(
+        hc,
+        pointFormat=paste0(
+          '<span style="color:{point.color}">\u25CF</span> {series.name} <b>{point.y:,.',
+          digits,
+          'f}%',preappend,'</b><br>',
+          append
+        )
+      )
+    }
+  }
+  else {
+    hc_tooltip(
+      hc,
+      pointFormat=paste0(
+        '<span style="color:{point.color}">\u25CF</span> {series.name} <b>{point.y:,.',
+        digits,
+        'f}',preappend,'</b><br>',
+        append
+      )
+    )
+  }
+}
+```
+
+```{r data prep}
+# For now the data is coming from home_economy_markdown.Rmd
+
+source("create_2023_data.R")
+
+date_connection <- tibble(
+  month_name = month.abb,
+  month_date = seq.Date(as.Date("2023-01-01"), as.Date("2023-12-01"), by = "month")
+)
+
+
+long_data <- all_months_stacked %>% 
+  mutate(month_abb = str_to_title(substr(month,1,3))) %>% 
+  left_join(date_connection, by = c("month_abb" = "month_name")) %>% 
+  left_join(wrap_up_categories, by = c("category" = "current_category")) %>%
+  mutate(updated_category = coalesce(new_category, category)) %>% 
+  select(month_date, place, amount, category = updated_category)
+
+
+distinct_categories <- long_data %>% 
+  group_by(category) %>% 
+  summarise(total = sum(amount)) %>% 
+  ungroup() %>% 
+  arrange(desc(total)) %>% 
+  distinct(category) %>% 
+  filter(!(category %in% c("house_payment", "vacations", "car", "holidays"))) %>% 
+  pull()
+
+
+
+restaurant_data <- long_data %>%
+  filter(category == "restaurant") %>% 
+  group_by(place) %>% 
+  summarise(
+    times_visited = n(),
+    total_spend = sum(amount),
+    avg_spend = round(mean(amount),2)
+  ) %>% 
+  ungroup() %>% 
+  arrange(desc(times_visited)) %>% 
+  mutate(
+    rank = dense_rank(desc(times_visited)),
+    place = str_to_title(gsub("_"," ",place))
+  ) 
+
+rank_colors <- tibble(
+  rank = 1:6,
+  color = c(wes_palettes$Cavalcanti1, "grey")
+)
+
+```
+
+```{r income}
+num_months_that_occured <- 12
+
+reoccuring_income <- tibble(
+  month = month.abb[1:num_months_that_occured],
+  source = rep("snap", num_months_that_occured),
+  amount = rep((3336 + 588) * 2, num_months_that_occured)
+)
+
+variable_income <- tribble(
+  ~month,  ~source, ~amount,
+  "Apr",   "snap",     8000,
+  "Nov",   "uepc",      930,
+  "Oct",   "uepc",     1113,
+  "Dec",   "uepc",      712,
+  "Dec",   "refund",   1800,
+  "Dec",   "xmas",     1550
+)
+
+auto_withdrawl <- tribble(
+  ~source,      ~description,      ~amount,
+  "snap_other",  "401k",               8656,
+  "snap_other",  "dental",              206,
+  "snap_other",  "hsa",                1181,
+  "snap_other",  "medical",            3553,
+  "snap_other",  "other_insurance",     514,
+  "snap_other",  "social_security",    8958,
+  "snap_other",  "medicare",           2095,
+  "snap_other",  "federal_tax",       14403,
+  "snap_other",  "state_tax",          6431
+)
+
+stacked_income <- reoccuring_income %>% 
+  bind_rows(variable_income) %>% 
+  arrange(month)
+  
+combined_income <- stacked_income %>% 
+  group_by(source) %>% 
+  summarise(amount = sum(amount)) %>%
+  ungroup() %>% 
+  bind_rows(auto_withdrawl %>% 
+              group_by(source) %>% 
+              summarise(amount = sum(amount))
+  )
+```
+
+```{r}
+# Things I want
+  # Category charts
+    # {DONE} Overall Line chart underneath a stacked bar 
+      # {DONE} Stacked bar will have the top 5 places based on $ spent with all others grouped into an other category
+  # Overall earned vs spent visualization
+  # Debt Visualization
+  # {DONE} Breakdown of Restaurants visited and avg amount spent per visit
+  # It'd be cool to get some kind of histograms / boxplots of the categories with confidence intervals
+  # Sunburst chart visualization of all spent and categories percentages
+
+
+```
+
+```{r overall income vs spend}
+
+combined_categories <- tribble(
+  ~updated_category, ~former_category,
+  "house",           "house_var",
+  "house",           "house_essential",
+  "house",           "house_payment",
+  "house",           "subscription",
+  "food",            "restaurant",
+  "food",            "grocery",
+  "auto",            "car",
+  "auto",            "gas",
+  "self_care",       "clothes",
+  "self_care",       "hobby",
+  "self_care",       "personal",
+  "self_care",       "personal_development",
+  "ch"
+  "other", 
+)
+
+
+
+long_data %>% distinct(category)
+
+
+```
+
+```{r input ui}
+inputPanel(
+  pickerInput(
+   inputId = "category",
+   label = "Category:", 
+   selected = "house_var",
+   choices = distinct_categories
+  )
+)
+```
+
+```{r server, eval=TRUE}
+
+single_category_data <- eventReactive(input$category, {
+  long_data %>% 
+    filter(category == input$category) %>% 
+    group_by(month_date) %>% 
+    summarise(total_amount = sum(amount)) %>% 
+    ungroup()
+})
+
+single_cateogry_place_data <- eventReactive(input$category, {
+  long_data %>% 
+    filter(category == input$category) %>% 
+    group_by(month_date, place) %>% 
+    summarise(total_amount = sum(amount)) %>% 
+    ungroup() %>% 
+    group_by(place) %>% 
+    mutate(year_total = sum(total_amount)) %>% 
+    ungroup() %>% 
+    mutate(
+      rank = dense_rank(desc(year_total)),
+      update_rank = if_else(rank <= 5, rank, 6),
+      update_place = if_else(rank <= 5, place, "other")
+    ) %>% 
+    left_join(rank_colors, by = c("update_rank" = "rank")) %>% 
+    group_by(month_date,update_place,color) %>% 
+    summarise(total_amount = sum(total_amount)) %>% 
+    ungroup() %>% 
+    group_by(update_place) %>%
+    mutate(year_total = sum(total_amount)) %>% 
+    ungroup() %>% 
+    arrange(month_date, desc(year_total)) %>% 
+    select(-year_total)
+})
+
+
+
+```
+
+```{r,eval=TRUE}
+
+
+
+renderHighchart({
+  #combineWidgets(
+    highchart(type='stock') %>% 
+      hc_add_series_list(
+         #prepped_single_category_place %>% 
+        single_cateogry_place_data() %>% 
+          group_by(
+            type = 'column',
+            name = update_place,
+            stacking = 'normal',
+            color = color,
+            borderWidth = 1,
+            borderColor = 'white'
+          ) %>% 
+          do(data=list_parse(data.frame(x=datetime_to_timestamp(.$month_date),y=.$total_amount)))
+      ) %>% 
+      hc_yAxis(opposite=FALSE,labels=list(format='${value}')) %>% 
+      hc_plotOptions(
+        series = list(
+          grouping = TRUE,
+          pointPadding = NULL,
+          pointRange = NULL,
+          pointWidth = NULL,
+          groupPadding = 0
+        )
+      ) %>% 
+      custom_tooltip(
+        numberFormat = "dollar",
+        digits = 2
+      )  %>% 
+      hc_navigator(enabled=FALSE) %>%
+      hc_rangeSelector(enabled=FALSE) %>%
+      hc_scrollbar(enabled=FALSE) %>% 
+      hc_legend(enabled = TRUE)#,
+ #  highchart(type = "stock") %>% 
+ #hc_add_series_list( # datasets need to be converted to list objects for highcharts.
+ #  #single_cateogry_data %>% 
+ #  single_category_data() %>%
+ #    group_by(
+ #      name = "Total $", # piece one from above. using a string means there will be only one series to plot.
+ #      type = "line" # create a line chart
+ #    ) %>%
+ #    do(data = list_parse(data.frame( # explained above
+ #      x = datetime_to_timestamp(.$month_date), # for time series, you need to convert dates into epoch time
+ #      y = .$total_amount # actual column to plot
+ #    )))
+ #) %>% 
+ #hc_yAxis(opposite=FALSE,labels=list(format='${value}')) %>% 
+ #hc_rangeSelector(enabled = FALSE) %>%
+ #hc_navigator(enabled = FALSE) %>%
+ #hc_scrollbar(enabled = FALSE) %>% 
+ #hc_colors("black") %>% 
+ #custom_tooltip(
+ #  numberFormat = "dollar",
+ #  digits = 2
+ #) %>% 
+ #hc_title(
+ #  text = paste0("Overall ", str_to_title(gsub("_"," ", input$category)), " Category"),
+ #  style = list(fontWeight=600),
+ #  align = "left"
+ #),
+ #ncol = 2
+ #)
+})
+
+  
+  
+
+
+
+
+
+```
+
+# Restaurant Review
+
+```{r restaurants, eval}
+reactable(
+  restaurant_data,
+  columns = list(
+    place = colDef("Restaurant"),
+    times_visited = colDef("# Visits"),
+    avg_spend = colDef("Avg $", format = colFormat(currency = "USD")),
+    total_spend = colDef("Total $", format = colFormat(currency = "USD")),
+    rank = colDef("Rank")
+  )
+)
+  
+
+```
