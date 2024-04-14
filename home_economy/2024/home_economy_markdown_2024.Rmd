@@ -4,11 +4,11 @@ author: '[Brody Moore](mailto:bmoore1@snapfinance.com)'
 date: "`r format(Sys.time(),'%B %d, %Y @ %I:%M%p')`"
 output:
   rmdformats::readthedown:
-    highlight: tango
-    toc_depth: 3
-    use_bookdown: TRUE
+  highlight: tango
+toc_depth: 3
+use_bookdown: TRUE
 ---
-
+  
 ```{r setup, include=FALSE}
 library(knitr)
 library(rmdformats)
@@ -40,12 +40,12 @@ opts_chunk$set(
 
 breakdown_function <- function(data) {
   data %>%
-  mutate(place = if_else(category == "restaurant", "restaurant", place)) %>% 
-  group_by(category, place) %>% 
-  summarise(amt_spent = sum(amount)) %>% 
-  group_by(category) %>% 
-  mutate(category_spent = sum(amt_spent)) %>% 
-  arrange(desc(category_spent), desc(amt_spent))
+    mutate(place = if_else(category == "restaurant", "restaurant", place)) %>% 
+    group_by(category, place) %>% 
+    summarise(amt_spent = sum(amount)) %>% 
+    group_by(category) %>% 
+    mutate(category_spent = sum(amt_spent)) %>% 
+    arrange(desc(category_spent), desc(amt_spent))
 }
 
 category_function <- function(data, month) {
@@ -88,10 +88,38 @@ wrap_up_reactable <- function(data) {
   )
 }
 
+specific_vaca_function <- function(data, former_year_vaca, vacation_text) {
+  data %>% 
+    bind_rows(former_year_vaca) %>% 
+    filter(category == vacation_text) %>% 
+    mutate(
+      defined_category = gsub(".*?\\((.*?)\\).*?", "\\1", place),
+      place = gsub("\\s*\\(.*\\)", "", place)
+    ) %>% 
+    group_by(defined_category) %>% 
+    mutate(tot_amt = sum(amount)) %>% 
+    ungroup() %>% 
+    arrange(desc(tot_amt)) %>% 
+    select(defined_category, place, amount)
+}
+
+specific_vaca_reactable <- function(data) {
+  reactable(
+  data,
+  groupBy = c("defined_category"),
+  columns = list(
+    amount = colDef(
+      aggregate = "sum", 
+      format = colFormat(currency = "USD"), 
+      footer = function(values) sprintf("$%.2f", sum(values))),
+    defined_category = colDef(footer = "Total")
+  )
+)
+}
 ```
 
 <!-- Income Documentation -->
-
+  
 ```{r income}
 # Things like making money from a category that we already spent money on doesn't go in here. Only earned income from salary or side gigs.
 
@@ -116,7 +144,7 @@ variable_income <- tribble(
 stacked_income <- reoccuring_income %>% 
   bind_rows(variable_income) %>% 
   arrange(month)
-  
+
 combined_income <- stacked_income %>% 
   group_by(month) %>% 
   summarise(amount = sum(amount)) %>%
@@ -130,7 +158,7 @@ combined_income <- stacked_income %>%
 ```
 
 <!-- Monthly Data Load -->
-
+  
 ```{r jan}
 # jan Purchases -------------------------------------------------------
 
@@ -165,7 +193,7 @@ jan_purchases <- tribble(
   "chilis",          12.94, "bunco",
   "bath_body_works", 10.10, "bunco",
   "valvoline",       44.98, "car",
-  "brutus_loan",    340.00, "car",
+  "brutus_loan",    350.00, "debt",
   "brutus_reg",     151.00, "car",
   "maverik",          2.31, "restaurant",
   "zupas",           26.98, "restaurant",
@@ -181,7 +209,7 @@ jan_purchases <- tribble(
   "panda_express",    5.83, "restaurant",
   "chick_fila",      13.61, "restaurant",
   "amazon",         171.19, "josie_bday",
-  "amazon",           9.58, "misc",
+  "amazon",           9.58, "baby",
   "walmart",         76.79, "misc",
   "lucky_slice",     16.25, "restaurant",
   "smiths",          45.90, "grocery",
@@ -192,9 +220,9 @@ jan_purchases <- tribble(
   "homegoods",       10.69, "house_var",
   "adobe",           10.69, "subscription",
   "maceys",           9.67, "grocery",
-  "amazon",          38.92, "misc",
+  "amazon",          38.92, "baby",
   "tj_maxx",         29.94, "clothes",
-  "target",          33.16, "misc",
+  "target",          33.16, "baby",
   "locals",          26.74, "personal",
   "five_guys",       26.74, "restaurant",
   "chick_fila",      10.56, "restaurant",
@@ -209,12 +237,12 @@ jan_purchases <- tribble(
   "harmons",         16.18, "grocery",
   "twirl",          135.03, "clothes",
   "nielsens",         8.19, "restaurant",
-  "roku",            15.01, "subscription",
+  "roku_disney",     15.01, "subscription",
   "chip",            13.93, "restaurant",
   "quantum_fiber",   75.00, "house_essential",
   "rocky_mountain",  44.72, "house_essential",
   "nibley_city",    107.49, "house_essential",
-  "planet_fitness",  10.70, "personal_development",
+  "planet_fitness",  10.70, "subscription",
   "winco",           17.41, "grocery",
   "mortgage",      3487.68, "house_payment",
   "ginnys",           7.54, "restaurant",
@@ -225,11 +253,12 @@ jan_purchases <- tribble(
   "apple",            2.99, "subscription",
   "quick_quack",     41.99, "subscription",
   "old_navy",        45.96, "baby",
-  "amazon",          26.74, "misc",
-  "sams_club",      112.17, "misc",
+  "amazon",          26.74, "baby",
+  #"sams_club",      112.17, "misc",
+  "sams_club",       34.45, "grocery",
+  "sams_club",       77.72, "baby",
   "noodles",         24.08, "restaurant",
   "in_n_out",        15.98, "restaurant",
-  "drury_inn",      232.80, "vacation_san_antonio",
   "wendys",           2.48, "restaurant",
   "tubby_todd",      66.35, "baby",
   "sp_kloudy_kids",  34.32, "baby",
@@ -249,7 +278,10 @@ jan_purchases <- tribble(
   "locals",          17.11, "baby",
   "maverik",         20.76, "gas",
   "student_loans",  336.10, "debt",
-  "allstate",        11.50, "house_essential"
+  "allstate",        11.50, "house_essential",
+  
+  # Breakdown Texas
+  "drury_inn (extra hotel)",      232.80, "vacation_san_antonio"
 ) %>% 
   mutate(month = "jan")
 
@@ -265,69 +297,156 @@ jan_categories <- category_function(jan_purchases, "jan")
 
 feb_purchases <- tribble(
   ~place,          ~amount, ~category,
-  "interval",        79.00, "vacation_san_antonio",
-  "maverik",          2.46, "vacation_san_antonio",
-  "unita_brewing",    6.53, "vacation_san_antonio",
-  "whataburger",     17.94, "vacation_san_antonio",
+  "krystal",        116.00, "subscription",
   "smiths",           8.03, "personal",
   "maverik",         30.38, "gas",
-  "in_n_out",         3.46, "vacation_san_antonio",
   "harmons",          2.77, "personal",
   "cafe_rio",        11.27, "restaurant",
-  "botanical_garden",12.00, "vacation_san_antonio",
-  "voodoo_doughnut", 11.75, "vacation_san_antonio",
-  "terry_blacks",    44.37, "vacation_san_antonio",
-  "sonic",            5.70, "vacation_san_antonio",
-  "p_terry",          3.70, "vacation_san_antonio",
-  "mi_casa",         19.38, "vacation_san_antonio",
-  "scruffys",         6.40, "vacation_san_antonio",
-  "target",          63.82, "vacation_san_antonio",
-  "parking",         10.00, "vacation_san_antonio",
-  "amazon",          16.08, "vacation_san_antonio",
-  "cici_pizza",       9.19, "vacation_san_antonio",
-  "target",         104.56, "vacation_san_antonio",
-  "kfc",              3.56, "vacation_san_antonio",
-  "jersey_mikes",    11.73, "vacation_san_antonio",
-  "heb_grocery",     70.67, "vacation_san_antonio",
-  "bucees",          85.95, "vacation_san_antonio",
-  "thai_hut",        37.65, "vacation_san_antonio",
-  "taqueria_nuevo",  14.06, "vacation_san_antonio",
-  "shell_oil",       18.73, "vacation_san_antonio",
-  "shell",            5.60, "vacation_san_antonio",
-  "casa_rio",        50.26, "vacation_san_antonio",
-  "parking",         15.00, "vacation_san_antonio",
-  "dunkin",           7.56, "vacation_san_antonio",
-  "san_antonio_zoo", 56.24, "vacation_san_antonio",
-  "viva_satx",       14.06, "vacation_san_antonio",
-  "quiktrip",         8.54, "vacation_san_antonio",
-  "parking",         25.00, "vacation_san_antonio",
-  "five_and_dime",   11.90, "vacation_san_antonio",
-  "dough_pizza",     43.00, "vacation_san_antonio",
-  "parking",         15.00, "vacation_san_antonio",
-  "henry_puffy_taco",23.00, "vacation_san_antonio",
-  "chick_fila",       4.93, "vacation_san_antonio",
-  "auntie_annes",    14.58, "vacation_san_antonio",
-  "voodoo_doughnut",  7.00, "vacation_san_antonio",
-  "target",          60.08, "vacation_san_antonio",
-  "sichuan_house",   45.98, "vacation_san_antonio",
-  "parking",         10.00, "vacation_san_antonio",
-  "party_city",      32.91, "vacation_san_antonio",
-  "marble_slab",     12.97, "vacation_san_antonio",
-  "mattengas_pizza", 35.16, "vacation_san_antonio",
-  "soup_peddler",    21.37, "vacation_san_antonio",
-  "popeyes",         11.24, "vacation_san_antonio",
-  "mi_casa",         32.42, "vacation_san_antonio",
-  "girl_scout",       5.00, "vacation_san_antonio",
-  "bucees",          22.77, "vacation_san_antonio",
-  "bucees",          43.02, "vacation_san_antonio",
-  "la_quinta",      106.41, "vacation_san_antonio",
+  "amazon",          16.08, "subscription",
   "ffb",             49.99, "football",
-  "exxonmobil",       4.97, "vacation_san_antonio",
-  "austin_airport",   5.40, "vacation_san_antonio",
   "cutler_cookie",   17.59, "restaurant",
   "yeezy",           36.40, "clothes",
   "adobe",           10.69, "subscription",
-  "dominion",       139.91, "house_essential"
+  "dominion",       139.91, "house_essential",
+  "adobe",           10.69, "subscription",
+  "sams_club",       32.93, "grocery",
+  "sams_club",        5.76, "restaurant",
+  "zupas",           14.03, "restaurant",
+  "cold_stone",       7.78, "restaurant",
+  "arbys",           16.33, "restaurant",
+  "maceys",           3.28, "personal",
+  "amazon",          31.39, "valentines",
+  "amazon",          26.80, "valentines",
+  "costa_vida",       8.09, "restaurant",
+  "taco_time",        7.24, "restaurant",
+  "bowmans",         57.33, "valentines",
+  "walmart",          1.69, "grocery",
+  "maverik",         31.87, "gas",
+  "apple",            7.85, "subscription",
+  "in_n_out",        37.02, "becks_kids",
+  "coca_cola",        2.50, "becks_kids",
+  "spitz",           16.89, "restaurant",
+  "smiths",          14.81, "grocery",
+  "cheveron",         4.12, "restaurant",
+  "airborne",        61.10, "becks_kids",
+  "amazon",          20.37, "house_var",
+  "scheels",         64.35, "clothes",
+  "handels",         11.79, "restaurant",
+  "raising_canes",    4.58, "restaurant",
+  "millcreek",        5.00, "hiking",
+  "maverik",         34.82, "gas",
+  "habanero_express", 8.68, "restaurant",
+  "walmart",         15.64, "misc",
+  "target",          76.04, "personal",
+  "scheels",         35.36, "clothes",
+  "qulited_bear",    60.04, "new_baby",
+  "zupas",           15.74, "restaurant",
+  "sonic",            3.24, "restaurant",
+  "roku_disney",     15.01, "subscription",
+  "pretty_bird",     18.22, "restaurant",
+  "in_n_out",         8.01, "restaurant",
+  "pho_cali",        15.00, "restaurant",
+  "chick_fila",       7.21, "restaurant",
+  "maverik",         29.61, "gas",
+  "walmart",         40.07, "misc",
+  "quick_quack",     41.99, "subscription",
+  "jersey_mikes",    15.11, "restaurant",
+  "cv_draper",       20.00, "misc",
+  "trader_joes",     15.63, "grocery",
+  "taco_mall",       10.55, "restaurant",
+  "taco_bell",        8.51, "restaurant",
+  "apple",            2.99, "subscription",
+  #"target",          63.58, "misc",
+  "target",          30.28, "house_var",
+  "target",          33.30, "baby",
+  "nielsens",         5.17, "restaurant",
+  "kneaders",         1.61, "restaurant",
+  "hires_big_h",     10.37, "restaurant",
+  "jimmy_johns",      8.65, "restaurant",
+  "maverik",         37.76, "gas",
+  "harmons",         53.15, "grocery",
+  "walmart",         52.41, "grocery",
+  "logans_heroes",   23.25, "restaurant",
+  "lees_market",     46.85, "grocery",
+  "cold_stone",       7.51, "restaurant",
+  "apple",           10.99, "subscription",
+  "amazon",          10.69, "baby",
+  "panda_express",   18.58, "restaurant",
+  "fiiz",             3.29, "restaurant",
+  "wendys",           7.95, "restaurant",
+  "old_grist_mills", 17.63, "restaurant",
+  "twisted_sugar",    7.01, "restaurant",
+  "old_navy",         8.54, "new_baby",
+  "sierra",          37.45, "clothes",
+  "homegoods",        4.27, "house_var",
+  "walmart",         53.03, "misc",
+  "walmart",         10.67, "church",
+  "zao",             21.65, "restaurant",
+  "student_loans",  336.10, "debt",
+  "quantum_fiber",   75.00, "house_essential",
+  "allstate",        11.50, "house_essential",
+  "costco",           5.07, "restaurant",
+  "nibley_city",    107.49, "house_essential",
+  "rocky_mountain",  47.11, "house_essential",
+  "planet_fitness",  10.70, "subscription",
+  "mortgage",      3856.79, "house_payment",
+  "hoa",             60.00, "house_essential",
+  
+  # Breakdown Texas
+  "interval (hotel week)",        79.00, "vacation_san_antonio",
+  "maverik (restaurant)",          2.46, "vacation_san_antonio",
+  "unita_brewing (restaurant)",    6.53, "vacation_san_antonio",
+  "whataburger (restaurant)",     17.94, "vacation_san_antonio",
+  "in_n_out (restaurant)",         3.46, "vacation_san_antonio",
+  "botanical_garden (experience)",12.00, "vacation_san_antonio",
+  "voodoo_doughnut (restaurant)", 11.75, "vacation_san_antonio",
+  "terry_blacks (restaurant)",    44.37, "vacation_san_antonio",
+  "sonic (restaurant)",            5.70, "vacation_san_antonio",
+  "p_terry (restaurant)",          3.70, "vacation_san_antonio",
+  "mi_casa (restaurant)",         19.38, "vacation_san_antonio",
+  "scruffys (restaurant)",         6.40, "vacation_san_antonio",
+  "target (personal)",          63.82, "vacation_san_antonio",
+  "parking (parking)",         10.00, "vacation_san_antonio",
+  "cici_pizza (restaurant)",       9.19, "vacation_san_antonio",
+  "target (personal)",         104.56, "vacation_san_antonio",
+  "kfc (restaurant)",              3.56, "vacation_san_antonio",
+  "jersey_mikes (restaurant)",    11.73, "vacation_san_antonio",
+  "heb_grocery (grocery)",     70.67, "vacation_san_antonio",
+  "bucees (restaurant)",          85.95, "vacation_san_antonio",
+  "thai_hut (restaurant)",        37.65, "vacation_san_antonio",
+  "taqueria_nuevo (restaurant)",  14.06, "vacation_san_antonio",
+  "shell_oil (gas)",       18.73, "vacation_san_antonio",
+  "shell (restaurant)",            5.60, "vacation_san_antonio",
+  "casa_rio (restaurant)",        50.26, "vacation_san_antonio",
+  "parking (parking)",         15.00, "vacation_san_antonio",
+  "dunkin (restaurant)",           7.56, "vacation_san_antonio",
+  "san_antonio_zoo (experience)", 56.24, "vacation_san_antonio",
+  "viva_satx (experience)",       14.06, "vacation_san_antonio",
+  "quiktrip (restaurant)",         8.54, "vacation_san_antonio",
+  "parking (parking)",         25.00, "vacation_san_antonio",
+  "five_and_dime (souvenier)",   11.90, "vacation_san_antonio",
+  "dough_pizza (restaurant)",     43.00, "vacation_san_antonio",
+  "parking (parking)",         15.00, "vacation_san_antonio",
+  "henry_puffy_taco (restaurant)",23.00, "vacation_san_antonio",
+  "chick_fila (restaurant)",       4.93, "vacation_san_antonio",
+  "auntie_annes (restaurant)",    14.58, "vacation_san_antonio",
+  "voodoo_doughnut (restaurant)",  7.00, "vacation_san_antonio",
+  "target (personal)",          60.08, "vacation_san_antonio",
+  "sichuan_house (restaurant)",   45.98, "vacation_san_antonio",
+  "parking (parking)",         10.00, "vacation_san_antonio",
+  "party_city (misc)",      32.91, "vacation_san_antonio",
+  "marble_slab (restaurant)",     12.97, "vacation_san_antonio",
+  "mattengas_pizza (restaurant)", 35.16, "vacation_san_antonio",
+  "soup_peddler (restaurant)",    21.37, "vacation_san_antonio",
+  "popeyes (restaurant)",         11.24, "vacation_san_antonio",
+  "mi_casa (restaurant)",         32.42, "vacation_san_antonio",
+  "girl_scout (grocery)",       5.00, "vacation_san_antonio",
+  "bucees (gas)",          22.77, "vacation_san_antonio",
+  "bucees (restaurant)",          43.02, "vacation_san_antonio",
+  "la_quinta (extra hotel)",      106.41, "vacation_san_antonio",
+  "fox_rental_car (rental car)", 456.70, "vacation_san_antonio",
+  "exxonmobil (restaurant)",       4.97, "vacation_san_antonio",
+  "austin_airport (restaurant)",   5.40, "vacation_san_antonio"
 ) %>% 
   mutate(month = "feb")
 
@@ -338,22 +457,310 @@ feb_categories <- category_function(feb_purchases, "feb")
 
 ```
 
+```{r mar}
+# mar Purchases -------------------------------------------------------
+
+mar_purchases <- tribble(
+  ~place,            ~amount, ~category,
+  "brutus_loan",      350.00, "debt",
+  "student_loans",    336.10, "debt",
+  "mandrin_garden",    12.69, "restaurant",
+  "zupas",             11.33, "restaurant",
+  "wendys",             2.47, "restaurant",
+  "walmart",           45.79, "grocery",
+  "tropical_smoothie",  7.77, "restaurant",
+  "sams_club",          9.92, "grocery",
+  "sams_club",          5.76, "restaurant",
+  "amazon",            32.15, "baby",
+  "sonic",              3.22, "restaurant",
+  "amazon",            16.08, "subscription",
+  "mortys_cafe",       27.27, "restaurant",
+  "costco",             2.69, "restaurant",
+  "costco",            99.20, "grocery",
+  "krystal",          116.00, "subscription",
+  "dominion",         152.44, "house_essential",
+  "hoa",               60.00, "house_essential",
+  "rocky_mountain",    37.05, "house_essential",
+  "nibley_city",      107.49, "house_essential",
+  "allstate",          11.50, "house_essential",
+  "quantum_fiber",     75.00, "house_essential",
+  "costco",             1.62, "restaurant",
+  "mortgage",        3856.79, "house_payment",
+  "planet_fitness",    10.70, "subscription",
+  "ticket_master",    151.17, "hobby",
+  "mortys",            27.27, "restaurant",
+  "maverik",           35.17, "gas",
+  #"target",            19.79, "misc",
+  "target",            14.80, "baby",
+  "target",             4.99, "grocery",
+  "sams_club",         89.04, "misc", # not sure why this isn't showing up
+  "in_n_out",           7.43, "restaurant",
+  "homegoods",         92.39, "house_var",
+  "columbia",          24.15, "clothes",
+  "carters",           77.88, "baby",
+  "raising_canes",     21.83, "restaurant",
+  "habanero_express",  13.02, "restaurant",
+  #"target",           143.35, "misc",
+  "target",            41.67, "baby",
+  "target",           101.68, "clothes",
+  #"target",           -75.93, "misc",
+  "target",           -18.00, "baby",
+  "target",           -57.93, "misc",
+  "tjmaxx",           187.99, "clothes",
+  "tjmaxx",           -13.93, "clothes",
+  "noodles",            8.93, "restaurant",
+  "pei_wei",           21.41, "restaurant",
+  "nordstrom_rack",    64.29, "clothes",
+  "in_n_out",          12.61, "restaurant",
+  "target",            58.84, "baby",
+  "quilts_etc",        20.48, "new_baby",
+  "old_navy",          89.94, "misc",
+  "target",            28.03, "misc",
+  "and_collar",       103.16, "clothes",
+  "sams_club",         43.82, "gas",
+  "seven_eleven",       4.12, "restaurant",
+  "target",            12.84, "misc",
+  "davis_pizza",       28.19, "restaurant",
+  "sams_club",         29.80, "gas",
+  "jamba_juice",       18.70, "restaurant",
+  "tjmaxx",           -21.44, "clothes",
+  "zurchers",          21.39, "bday",
+  "walmart",            7.27, "baby",
+  "in_n_out",           8.06, "restaurant",
+  "target",           -30.89, "misc",
+  "sonic",              3.24, "restaurant",
+  "corner_bakery",     12.86, "restaurant",
+  "carters",           51.51, "baby",
+  "carters",          -16.12, "baby",
+  "trader_joes",       63.37, "grocery",
+  "karl_malone_toyota",  500, "new_car",
+  #"target",            55.74, "misc",
+  "target",            12.69, "personal",
+  "target",            20.00, "clothes",
+  "target",            23.05, "grocery",
+  "tjmaxx",            64.31, "clothes",
+  "adobe",             10.69, "subscription",
+  "jimmy_johns",        8.69, "restaurant",
+  "davis_park",        94.00, "golf",
+  "justin",           -38.00, "golf",
+  "gus_da_bus",       -20.00, "golf",
+  "twisted_sugar",      6.50, "restaurant",
+  "maverik",           41.69, "gas",
+  "seven_eleven",       1.07, "restaurant",
+  "sonic",              3.24, "restaurant",
+  "rr_bbq",            11.95, "restaurant",
+  "crown_burgers",     10.81, "restaurant",
+  "twirl",             80.38, "clothes",
+  "maverik",           26.82, "gas",
+  "maverik",            4.12, "restaurant",
+  "maverik",            3.21, "restaurant",
+  "boba_world",        28.00, "restaurant",
+  "quick_quack",       11.99, "misc",
+  "maverik",            2.98, "restaurant",
+  "seven_eleven",      46.67, "gas",
+  "thai_house",        66.00, "restaurant",
+  "great_harvest",     12.95, "restaurant",
+  "maverik",            4.37, "restaurant",
+  "smiths",            24.15, "grocery",
+  "maverik",           33.63, "gas",
+  "taco_time",         21.93, "restaurant",
+  "blacksmith",         7.23, "restaurant",
+  "seven_eleven",      40.46, "gas",
+  "roku_disney",       15.00, "subscription",
+  "apple",              2.99, "subscription",
+  "quick_quack",       41.99, "subscription",
+  "amazon",            48.24, "baby",
+  "apple",             10.99, "subscription",
+  "season_tickets",   550.00, "football",
+
+  
+  # Breakdown Carolina expenses
+  "hotel_char (extra hotel)",       116.56, "vacation_carolina",
+  "hotel_char (extra hotel)",        71.02, "vacation_carolina",
+  "parking (parking)",            1.50, "vacation_carolina",
+  "parking (parking)",            1.62, "vacation_carolina",
+  "parking (parking)",            3.00, "vacation_carolina",
+  "interval (hotel week)",          79.00, "vacation_carolina",
+  "expedia (extra hotel)",           93.24, "vacation_carolina",
+  "walmart (personal)",           75.69, "vacation_carolina",
+  "waffle_house (restaurant)",      21.00, "vacation_carolina",
+  "amelies (restaurant)",            8.01, "vacation_carolina",
+  "taco_bell (restaurant)",          4.96, "vacation_carolina",
+  "mint_museum (souvenir)",       20.11, "vacation_carolina",
+  "sd_missouri (misc)",        4.73, "vacation_carolina",
+  "harris_teeter (grocery)",     12.13, "vacation_carolina",
+  "enat (restaurant)",              15.58, "vacation_carolina",
+  "archer_paper (souvenir)",      16.08, "vacation_carolina",
+  "papi_queso (restaurant)",        14.30, "vacation_carolina",
+  "522_temp_kiosk (parking)",     3.49, "vacation_carolina",
+  "target (grocery)",            36.84, "vacation_carolina",
+  "sonic (restaurant)",              5.89, "vacation_carolina",
+  "simply_southern (restaurant)",   37.09, "vacation_carolina",
+  "pepperbox_dough (restaurant)",    8.28, "vacation_carolina",
+  "smoothie_king (restaurant)",     13.29, "vacation_carolina",
+  "mcdonalds (restaurant)",          5.94, "vacation_carolina",
+  "citgo_oil (restaurant)",          2.31, "vacation_carolina",
+  "parkreceipts (experience)",       7.30, "vacation_carolina",
+  "tsunami_surf_shop (souvenir)", 37.10, "vacation_carolina",
+  "blueberrys_grill (restaurant)",  32.00, "vacation_carolina",
+  "rosmery_coin (misc)",       5.00, "vacation_carolina",
+  "cook_out (restaurant)",          10.92, "vacation_carolina",
+  "jersey_mikes (restaurant)",       7.13, "vacation_carolina",
+  "roy_and_sids (restaurant)",      29.00, "vacation_carolina",
+  "cook_out (restaurant)",           4.45, "vacation_carolina",
+  "barnes_noble (experience)",       5.44, "vacation_carolina",
+  "sp_shop (souvenir)",           34.86, "vacation_carolina",
+  "arrowhead_cc (experience)",      57.00, "vacation_carolina",
+  "battleship (experience)",        29.96, "vacation_carolina",
+  "copper_penny (restaurant)",      39.00, "vacation_carolina",
+  "circle_k (restaurant)",           7.57, "vacation_carolina",
+  "circle_k (gas)",          40.91, "vacation_carolina",
+  "chick_fila (restaurant)",        15.83, "vacation_carolina",
+  "parking (parking)",            8.40, "vacation_carolina",
+  "dead_dog_saloon (restaurant)",   43.16, "vacation_carolina",
+  "pf_changs (restaurant)",         20.00, "vacation_carolina",
+  "exxonmobil (restaurant)",         4.25, "vacation_carolina",
+  "brookgreen_gardens (experience)",44.00, "vacation_carolina",
+  "crs (experience)",               16.00, "vacation_carolina",
+  "myrtlewood_golf (experience)",   43.00, "vacation_carolina",
+  "duck_donuts (restaurant)",        8.29, "vacation_carolina",
+  "dead_dog_saloon (restaurant)",   34.00, "vacation_carolina",
+  "blue_orb_tours (experience)",    74.20, "vacation_carolina",
+  "taco_bell (restaurant)",          6.13, "vacation_carolina",
+  "sweet_potatoes (restaurant)",    50.00, "vacation_carolina",
+  "lake_city_drivein (restaurant)",  3.89, "vacation_carolina",
+  "sams_club (personal)",         34.94, "vacation_carolina",
+  "comfort_inn (extra hotel)",      187.85, "vacation_carolina",
+  "comfort_inn (extra hotel)",      167.15, "vacation_carolina",
+  "christmas_mouse (souvenir)",   64.75, "vacation_carolina",
+  "bojangles (restaurant)",          9.56, "vacation_carolina",
+  "blueberrys_grill (restaurant)",  28.00, "vacation_carolina",
+  "whitaker_garage (parking)",   10.00, "vacation_carolina",
+  "wileys_bbq (restaurant)",        38.00, "vacation_carolina",
+  "sonic (restaurant)",              3.73, "vacation_carolina",
+  "savannah_parking (parking)",   3.00, "vacation_carolina",
+  "svannah_clothing (souvenir)",  18.18, "vacation_carolina",
+  "mcdonalds (restaurant)",          2.24, "vacation_carolina",
+  "leopolds_ice_cream (restaurant)",20.01, "vacation_carolina",
+  "i_love_savannah (souvenir)",   13.90, "vacation_carolina",
+  "tybee_island (parking)",       8.00, "vacation_carolina",
+  "parking (parking)",           10.00, "vacation_carolina",
+  "spherix_dnr (experience)",       25.68, "vacation_carolina",
+  "sticky_fingers (restaurant)",    25.00, "vacation_carolina",
+  "circle_k (gas)",          42.14, "vacation_carolina",
+  "circle_k (restaurant)",          12.18, "vacation_carolina",
+  "vinne_van_gogo (restaurant)",    24.40, "vacation_carolina",
+  "dominos (restaurant)",           16.07, "vacation_carolina",
+  "days_inn (extra hotel)",          91.25, "vacation_carolina",
+  "adam_reimburse (hotel week)",  -500.00, "vacation_carolina",
+  "dairy_queen (restaurant)",        7.01, "vacation_carolina"
+) %>% 
+  mutate(month = "mar")
+
+mar_breakdown <- breakdown_function(mar_purchases)
+
+mar_categories <- category_function(mar_purchases, "mar")
+
+
+```
+
+```{r apr}
+# apr Purchases -------------------------------------------------------
+
+apr_purchases <- tribble(
+  ~place,            ~amount, ~category,
+  "krystal",          116.00, "subscription",
+  "walmart",          117.83, "baby",
+  "tj_maxx",           73.79, "baby",
+  "lees_marketplace",  87.12, "grocery",
+  "chipotle",          22.57, "restaurant",
+  "maverik",            4.69, "restaurant",
+  "great_harvest",      6.75, "restaurant",
+  "center_street",     21.52, "restaurant",
+  "amazon",            16.08, "subscription",
+  "walmart",           28.02, "clothes",
+  "maverik",           40.92, "gas",
+  "sonic",              3.88, "restaurant",
+  "whisperwood",       19.29, "grocery",
+  "amazon",           120.84, "baby",
+  "over_the_moon",     74.00, "new_baby",
+  "banbury_donuts",    18.93, "restaurant",
+  "walmart",           15.47, "baby",
+  "walmart",           10.66, "baby",
+  "sonic",              3.88, "restaurant",
+  "roosters",          63.00, "restaurant",
+  "maverik",           40.92, "gas",
+  "amazon",           148.73, "misc",
+  "smiths",           100.20, "grocery",
+  "zupas",             28.06, "restaurant",
+  "homegoods",        136.90, "new_baby",
+  "maverik",            1.59, "restaurant",
+  "great_harvest",     12.85, "restaurant",
+  "great_harvest",      6.49, "grocery",
+  "zao",               22.52, "restaurant",
+  "twisted_sugar",      6.70, "restaurant",
+  "aggie_ice_cream",   25.86, "church",
+  "bountiful_ridge",   21.00, "golf",
+  "walmart",           36.18, "gas",
+  "sonic",              1.61, "restaurant",
+  "rovalis",           42.00, "restaurant",
+  "in_n_out",           5.89, "restaurant",
+  "arbys",              3.55, "restaurant",
+  "sunshine_cafe",     36.00, "restaurant",
+  "brutus_loan",     5699.73, "debt",
+  "hoa",               60.00, "house_essential",
+  "dominion",         110.24, "house_essential",
+  "adobe",             10.69, "subscription",
+  "zupas",             12.72, "restaurant",
+  "santorinis",        21.12, "restaurant",
+  "blacksmith",        17.97, "restaurant",
+  "student_loans",   1178.25, "debt",
+  "mortgage",        3856.79, "house_payment",
+  "dominion",         110.24, "house_essential",
+  "hoa",               60.00, "house_essential",
+  
+  # Breakdown Carolina Vacation
+  "krystal (misc)",           50.00, "vacation_carolina",
+  "village_juice (restaurant)",     14.02, "vacation_carolina",
+  "melo_frog_llc (restaurant)",     20.14, "vacation_carolina",
+  "amelies (restaurant)",           17.58, "vacation_carolina",
+  "speedway (restaurant)",           9.16, "vacation_carolina",
+  "primohoagies (restaurant)",      26.13, "vacation_carolina",
+  "exxonmobil (gas)",        36.99, "vacation_carolina",
+  "wendys (restaurant)",            12.30, "vacation_carolina",
+  "avanti_markets (restaurant)",     5.46, "vacation_carolina",
+  "budget_rent_car (rental_car)",  516.05, "vacation_carolina",
+  "seven_eleven (gas)",      35.08, "vacation_carolina",
+  "maverik (restaurant)",            2.98, "vacation_carolina",
+  "cypress_gardens (experience)",   20.00, "vacation_carolina",
+) %>% 
+  mutate(month = "apr")
+
+apr_breakdown <- breakdown_function(apr_purchases)
+
+apr_categories <- category_function(apr_purchases, "apr")
+
+
+```
+
 <!-- Data Preparation -->
-
-
+  
 ```{r Yearly Aggregate Data Prep}
 
 # Aggregate Data
-   
+
 all_months_stacked <- jan_purchases %>% 
   bind_rows(feb_purchases) %>% 
+  bind_rows(mar_purchases) %>% 
+  bind_rows(apr_purchases) %>% 
   mutate(
-    place = case_when(place == "wal_mart" ~ "walmart",
+    place = case_when(place == "walmart" ~ "walmart",
                       TRUE ~ place)
   )
 
 wrap_up_categories <- tribble(
   ~current_category        , ~new_category,
+  "valentines"             , "holidays",
   "brody_bday"             , "holidays",
   "maddie_bday"            , "holidays",
   "halloween"              , "holidays",
@@ -365,12 +772,14 @@ wrap_up_categories <- tribble(
   "mom_bday"               , "holidays",
   "jessi_bday"             , "holidays",
   "josie_bday"             , "holidays",   
+  "bday"                   , "holidays",  
   "photography"            , "hobby",
   "football"               , "hobby",
   "golf"                   , "hobby",
   "barbie_party"           , "hobby",
   "bunco"                  , "hobby",
   "snowboarding"           , "hobby",
+  "hiking"                 , "hobby",
   "vacation"               , "vacations",
   "vacation_branson"       , "vacations",
   "vacation_cali"          , "vacations", 
@@ -382,14 +791,16 @@ wrap_up_categories <- tribble(
   "yellowstone_vacation2"  , "vacations",
   "vacation_san_antonio"   , "vacations",
   "vacation_carolina"      , "vacations",
-  "becks_kids"             , "family",
+  "becks_kids"             , "family"
 )
 
 
 
 
 categories_together <- jan_categories %>% 
-  bind_rows(feb_categories)
+  bind_rows(feb_categories) %>% 
+  bind_rows(mar_categories) %>% 
+  bind_rows(apr_categories)
 
 categories_together_cleaned <- categories_together %>%
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
@@ -402,7 +813,7 @@ categories_together_cleaned <- categories_together %>%
   mutate(total_amt_spent = rowSums(across(starts_with("amt_spent")), na.rm = TRUE),
          avg_amt_spent = rowMeans(across(starts_with("amt_spent")), na.rm = TRUE),
          avg_amt_spent = round(avg_amt_spent, 2)
-         ) %>% 
+  ) %>% 
   arrange(desc(total_amt_spent))
 
 # View overall what we've been doing
@@ -416,12 +827,12 @@ names(categories_together_cleaned) <- str_to_title(gsub("_"," ", gsub("amt_spent
 ```{r Vacation Breakdowns}
 relevant_vactions_2023_info <- tribble(
   ~place,            ~amount, ~category,     
-  "delta",            136.30, "vacation_carolina",
-  "delta",            286.30, "vacation_carolina",
-  "delta",            250.00, "vacation_carolina",
-  "interval",         198.00, "vacation_carolina",
-  "southwest",       345.18, "vacation_san_antonio",
-  "interval",        229.00, "vacation_san_antonio"
+  "delta (flights)",            136.30, "vacation_carolina",
+  "delta (flights)",            286.30, "vacation_carolina",
+  "delta (flights)",            250.00, "vacation_carolina",
+  "interval (hotel_week)",         198.00, "vacation_carolina",
+  "southwest (flights)",       345.18, "vacation_san_antonio",
+  "interval (hotel week)",        229.00, "vacation_san_antonio"
 ) %>% 
   mutate(month = "2023")
 
@@ -442,6 +853,16 @@ vacation_breakdown <- all_months_stacked %>%
 
 ```
 
+```{r Specific Vacations}
+# Texas
+texas_vaca <- specific_vaca_function(all_months_stacked, relevant_vactions_2023_info, "vacation_san_antonio")
+
+# Carolina Vacation
+carolina_vaca <- specific_vaca_function(all_months_stacked, relevant_vactions_2023_info, "vacation_carolina")
+
+
+```
+
 ```{r Holiday Breakdowns}
 holiday_breakdown <- all_months_stacked %>% 
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
@@ -455,7 +876,7 @@ holiday_breakdown <- all_months_stacked %>%
 ```
 
 <!-- One Off Data Preparation -->
-
+  
 ```{r Large Expense Planning}
 
 
@@ -485,7 +906,7 @@ amount_to_work_with - cc_debt
 ```
 
 <!-- Data Display -->
-
+  
 # Year To Date
 ```{r create ytd reactable}
 yearly_reactable <- categories_together_cleaned %>% 
@@ -498,7 +919,9 @@ yearly_reactable <- categories_together_cleaned %>%
       `Total Amt Spent` = colDef(sticky = "right", footer = function(values) sprintf("$%.2f", sum(values)), format = colFormat(currency = "USD")),
       `Avg Amt Spent`   = colDef(sticky = "right", footer = function(values) sprintf("$%.2f", sum(values)), format = colFormat(currency = "USD")),
       Jan       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
-      Feb       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
+      Feb       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
+      Mar       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
+      Apr       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
     )
   )
 ```
@@ -514,8 +937,8 @@ Previous Month {Left} vs Current Month {Right}
 
 ```{r Month Comparison}
 fluidRow(
-  column(6, wrap_up_reactable(jan_purchases)),
-  column(6, wrap_up_reactable(feb_purchases))
+  column(6, wrap_up_reactable(feb_purchases)),
+  column(6, wrap_up_reactable(mar_purchases))
 )
 
 ```
@@ -538,6 +961,18 @@ reactable(
     category = colDef(footer = "Total")
   )
 )
+```
+
+### Texas
+
+```{r texas}
+specific_vaca_reactable(texas_vaca)
+```
+
+### Carolina
+
+```{r carolina}
+specific_vaca_reactable(carolina_vaca)
 ```
 
 ## Holidays
@@ -572,11 +1007,11 @@ all_months_stacked %>%
                       aggregate = "sum", 
                       format = colFormat(currency = "USD"),
                       footer = function(values) sprintf("$%.2f", sum(values))
-                      ),
+      ),
       amount2 = colDef(name = "Avg Amount Spent", 
                        aggregate = "mean", 
                        format = colFormat(currency = "USD")
-                       )
+      )
     ),
     defaultSorted = list(amount = "desc"),
     height = 500,
@@ -585,7 +1020,7 @@ all_months_stacked %>%
 ```
 
 <!-- Random Other Things -->
-
+  
 ```{r Debts, eval = FALSE}
 debts_df <- tribble(
   ~who,             ~amount, ~min_payment,  ~category,
@@ -655,98 +1090,98 @@ all_months_stacked %>%
 
 
 # Flexible Costs (ranked in order of most important & on going to least)
-  # baby ~ Historical Monthly Average $700
-  # house_var ~ Historical Monthly Average $1250 
-  # personal ~ Historical Monthly Average $150
-  # date ~ Historical Monthly Average $75
-  # misc (Need to clean this up in jan)
-  # clothes (This one shouldn't be as major going forward) {Need to discuss reasonable clothes budget with Maddie}
-  # football (This one is all paid for)
-  # photography (Busness expense & expansion tbd...)
+# baby ~ Historical Monthly Average $700
+# house_var ~ Historical Monthly Average $1250 
+# personal ~ Historical Monthly Average $150
+# date ~ Historical Monthly Average $75
+# misc (Need to clean this up in jan)
+# clothes (This one shouldn't be as major going forward) {Need to discuss reasonable clothes budget with Maddie}
+# football (This one is all paid for)
+# photography (Busness expense & expansion tbd...)
 
-  flexible_categories <- tribble(
-    ~category,     ~expected_amt, ~flexible,
-    "baby",        350,           "flexible",
-    "clothes",     300,           "flexible",
-    "house_var",   150,           "flexible",
-    "personal",    100,           "flexible",
-    "misc",        250,           "flexible",
-    "date",        50,            "flexible"
-  )
+flexible_categories <- tribble(
+  ~category,     ~expected_amt, ~flexible,
+  "baby",        350,           "flexible",
+  "clothes",     300,           "flexible",
+  "house_var",   150,           "flexible",
+  "personal",    100,           "flexible",
+  "misc",        250,           "flexible",
+  "date",        50,            "flexible"
+)
 
 # Vacations
-  categories_together %>% 
-    filter(grepl("vacation", category)) %>% 
-    select(category, total_amt_spent)
+categories_together %>% 
+  filter(grepl("vacation", category)) %>% 
+  select(category, total_amt_spent)
 
-  
+
 # Food Costs
-  # restaurant 
-  # grocery
-  
-  wide_food <- all_months_stacked %>% 
-    filter(category %in% c("restaurant", "grocery")) %>% 
-    group_by(category, month) %>% 
-    summarise(amt_spent = sum(amount)) %>% 
-    ungroup() %>% 
-    pivot_wider(
-      names_from = "category",
-      values_from = "amt_spent"
-    )
-    
-  
-  all_months_stacked %>% 
-    filter(category %in% c("restaurant", "grocery")) %>% 
-    mutate(category = "food") %>% 
-    group_by(category, month) %>% 
-    summarise(amt_spent = sum(amount)) %>% 
-    ungroup() %>% 
-    left_join(wide_food, by = "month") %>% 
-    arrange(desc(amt_spent)) %>% 
-    select(
-      month,
-      grocery,
-      restaurant,
-      "total_amt_spent" = amt_spent
-    )
-  
-  # Reasonable Food Goal Could Be ?$600?
-  
-  
-# Inflexable Costs
-  # min_house_payment  $3500
-  # house_essential ~ $400
-  # car ~ $400
-  # gas ~ $250
-  # phone ~ $100
-  # subscription ~ $75
-  # BUFFER - $275
-  
-  inflexible_categories <- tribble(
-    ~category,         ~expected_amt, ~flexible,
-    "house_essential", 400,           "inflexible",
-    "car",             400,           "inflexible",
-    "gas",             250,           "inflexible",
-    "subscription",    100,           "inflexible",
-    "subscription",    75,            "inflexible",
-    "buffer",          275,           "inflexible",
-    "restaurant",      300,           "inflexible",
-    "grocery",         300,           "inflexible"
+# restaurant 
+# grocery
+
+wide_food <- all_months_stacked %>% 
+  filter(category %in% c("restaurant", "grocery")) %>% 
+  group_by(category, month) %>% 
+  summarise(amt_spent = sum(amount)) %>% 
+  ungroup() %>% 
+  pivot_wider(
+    names_from = "category",
+    values_from = "amt_spent"
   )
-  
-  # total inflexable: $3500 + $1500 = $5000
-  
-  # Overall including food: $5000 + $600 = $5600
-  
-  
+
+
+all_months_stacked %>% 
+  filter(category %in% c("restaurant", "grocery")) %>% 
+  mutate(category = "food") %>% 
+  group_by(category, month) %>% 
+  summarise(amt_spent = sum(amount)) %>% 
+  ungroup() %>% 
+  left_join(wide_food, by = "month") %>% 
+  arrange(desc(amt_spent)) %>% 
+  select(
+    month,
+    grocery,
+    restaurant,
+    "total_amt_spent" = amt_spent
+  )
+
+# Reasonable Food Goal Could Be ?$600?
+
+
+# Inflexable Costs
+# min_house_payment  $3500
+# house_essential ~ $400
+# car ~ $400
+# gas ~ $250
+# phone ~ $100
+# subscription ~ $75
+# BUFFER - $275
+
+inflexible_categories <- tribble(
+  ~category,         ~expected_amt, ~flexible,
+  "house_essential", 400,           "inflexible",
+  "car",             400,           "inflexible",
+  "gas",             250,           "inflexible",
+  "subscription",    100,           "inflexible",
+  "subscription",    75,            "inflexible",
+  "buffer",          275,           "inflexible",
+  "restaurant",      300,           "inflexible",
+  "grocery",         300,           "inflexible"
+)
+
+# total inflexable: $3500 + $1500 = $5000
+
+# Overall including food: $5000 + $600 = $5600
+
+
 # Amount I bring in per month (snap base pay)
-  # 8200
-  
+# 8200
+
 # Inflexable minus amount brought in
-  8200 - 5600
-  
-  # Amount left over for Flexible Costs $2600!
-  
+8200 - 5600
+
+# Amount left over for Flexible Costs $2600!
+
 
 
 ```
