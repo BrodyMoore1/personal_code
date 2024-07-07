@@ -175,7 +175,7 @@ jan_purchases <- tribble(
   "zupas",           13.49, "restaurant",
   "great_clips",     26.00, "personal",
   "maverik",          2.26, "restaurant",
-  "walmart",         16.13, "misc",
+  "wal_mart",         16.13, "misc",
   "super_chix",      17.26, "restaurant",
   "maceys",          27.84, "grocery",
   "hobby_lobby",     36.85, "bunco",
@@ -189,7 +189,7 @@ jan_purchases <- tribble(
   "maverik",         28.83, "gas",
   "sinclair_oil",    48.14, "gas",
   "zurchers",        11.47, "bunco",
-  "walmart",         18.15, "bunco",
+  "wal_mart",         18.15, "bunco",
   "chilis",          12.94, "bunco",
   "bath_body_works", 10.10, "bunco",
   "valvoline",       44.98, "car",
@@ -198,7 +198,7 @@ jan_purchases <- tribble(
   "maverik",          2.31, "restaurant",
   "zupas",           26.98, "restaurant",
   "groupon",         71.25, "car",
-  "walmart",         26.21, "house_var",
+  "wal_mart",         26.21, "house_var",
   "pho_cali",        15.00, "restaurant",
   "panda_express",    7.00, "restaurant",
   "maceys",          19.62, "grocery",
@@ -210,12 +210,12 @@ jan_purchases <- tribble(
   "chick_fila",      13.61, "restaurant",
   "amazon",         171.19, "josie_bday",
   "amazon",           9.58, "baby",
-  "walmart",         76.79, "misc",
+  "wal_mart",         76.79, "misc",
   "lucky_slice",     16.25, "restaurant",
   "smiths",          45.90, "grocery",
   "sierra",         123.04, "clothes",
   "sams_club",       21.15, "gas",
-  "walmart",         13.87, "misc",
+  "wal_mart",         13.87, "misc",
   "in_n_out",         7.99, "restaurant",
   "homegoods",       10.69, "house_var",
   "adobe",           10.69, "subscription",
@@ -320,7 +320,7 @@ feb_purchases <- tribble(
   "costa_vida",       8.09, "restaurant",
   "taco_time",        7.24, "restaurant",
   "bowmans",         57.33, "valentines",
-  "walmart",          1.69, "grocery",
+  "wal_mart",          1.69, "grocery",
   "maverik",         31.87, "gas",
   "apple",            7.85, "subscription",
   "in_n_out",        37.02, "becks_kids",
@@ -336,7 +336,7 @@ feb_purchases <- tribble(
   "millcreek",        5.00, "hiking",
   "maverik",         34.82, "gas",
   "habanero_express", 8.68, "restaurant",
-  "walmart",         15.64, "misc",
+  "wal_mart",         15.64, "misc",
   "target",          76.04, "personal",
   "scheels",         35.36, "clothes",
   "qulited_bear",    60.04, "new_baby",
@@ -348,7 +348,7 @@ feb_purchases <- tribble(
   "pho_cali",        15.00, "restaurant",
   "chick_fila",       7.21, "restaurant",
   "maverik",         29.61, "gas",
-  "walmart",         40.07, "misc",
+  "wal_mart",         40.07, "misc",
   "quick_quack",     41.99, "subscription",
   "jersey_mikes",    15.11, "restaurant",
   "cv_draper",       20.00, "misc",
@@ -365,7 +365,7 @@ feb_purchases <- tribble(
   "jimmy_johns",      8.65, "restaurant",
   "maverik",         37.76, "gas",
   "harmons",         53.15, "grocery",
-  "walmart",         52.41, "grocery",
+  "wal_mart",         52.41, "grocery",
   "logans_heroes",   23.25, "restaurant",
   "lees_market",     46.85, "grocery",
   "cold_stone",       7.51, "restaurant",
@@ -379,8 +379,8 @@ feb_purchases <- tribble(
   "old_navy",         8.54, "new_baby",
   "sierra",          37.45, "clothes",
   "homegoods",        4.27, "house_var",
-  "walmart",         53.03, "misc",
-  "walmart",         10.67, "church",
+  "wal_mart",         53.03, "misc",
+  "wal_mart",         10.67, "church",
   "zao",             21.65, "restaurant",
   "student_loans",  336.10, "debt",
   "quantum_fiber",   75.00, "house_essential",
@@ -467,7 +467,7 @@ mar_purchases <- tribble(
   "mandrin_garden",    12.69, "restaurant",
   "zupas",             11.33, "restaurant",
   "wendys",             2.47, "restaurant",
-  "walmart",           45.79, "grocery",
+  "wal_mart",           45.79, "grocery",
   "tropical_smoothie",  7.77, "restaurant",
   "sams_club",          9.92, "grocery",
   "sams_club",          5.76, "restaurant",
@@ -514,7 +514,7 @@ mar_purchases <- tribble(
   "in_n_out",          12.61, "restaurant",
   "target",            58.84, "baby",
   "quilts_etc",        20.48, "new_baby",
-  "old_navy",          89.94, "misc",
+  "old_navy",          89.94, "clothes",
   "target",            28.03, "misc",
   "and_collar",       103.16, "clothes",
   "sams_club",         43.82, "gas",
@@ -525,7 +525,7 @@ mar_purchases <- tribble(
   "jamba_juice",       18.70, "restaurant",
   "tjmaxx",           -21.44, "clothes",
   "zurchers",          21.39, "bday",
-  "walmart",            7.27, "baby",
+  "wal_mart",            7.27, "baby",
   "in_n_out",           8.06, "restaurant",
   "target",           -30.89, "misc",
   "sonic",              3.24, "restaurant",
@@ -582,7 +582,7 @@ mar_purchases <- tribble(
   "parking (parking)",            3.00, "vacation_carolina",
   "interval (hotel week)",          79.00, "vacation_carolina",
   "expedia (extra hotel)",           93.24, "vacation_carolina",
-  "walmart (personal)",           75.69, "vacation_carolina",
+  "wal_mart (personal)",           75.69, "vacation_carolina",
   "waffle_house (restaurant)",      21.00, "vacation_carolina",
   "amelies (restaurant)",            8.01, "vacation_carolina",
   "taco_bell (restaurant)",          4.96, "vacation_carolina",
@@ -670,7 +670,7 @@ mar_categories <- category_function(mar_purchases, "mar")
 apr_purchases <- tribble(
   ~place,            ~amount, ~category,
   "krystal",          116.00, "subscription",
-  "walmart",          117.83, "baby",
+  "wal_mart",          117.83, "baby",
   "tj_maxx",           73.79, "baby",
   "lees_marketplace",  87.12, "grocery",
   "chipotle",          22.57, "restaurant",
@@ -678,15 +678,15 @@ apr_purchases <- tribble(
   "great_harvest",      6.75, "restaurant",
   "center_street",     21.52, "restaurant",
   "amazon",            16.08, "subscription",
-  "walmart",           28.02, "clothes",
+  "wal_mart",           28.02, "clothes",
   "maverik",           40.92, "gas",
   "sonic",              3.88, "restaurant",
   "whisperwood",       19.29, "grocery",
   "amazon",           120.84, "baby",
   "over_the_moon",     74.00, "new_baby",
   "banbury_donuts",    18.93, "restaurant",
-  "walmart",           15.47, "baby",
-  "walmart",           10.66, "baby",
+  "wal_mart",           15.47, "baby",
+  "wal_mart",           10.66, "baby",
   "sonic",              3.88, "restaurant",
   "roosters",          63.00, "restaurant",
   "maverik",           40.92, "gas",
@@ -701,7 +701,7 @@ apr_purchases <- tribble(
   "twisted_sugar",      6.70, "restaurant",
   "aggie_ice_cream",   25.86, "church",
   "bountiful_ridge",   21.00, "golf",
-  "walmart",           36.18, "gas",
+  "wal_mart",           36.18, "gas",
   "sonic",              1.61, "restaurant",
   "rovalis",           42.00, "restaurant",
   "in_n_out",           5.89, "restaurant",
@@ -740,7 +740,7 @@ apr_purchases <- tribble(
   "taco_bell",         12.90, "restaurant",
   "ginnys",             3.72, "restaurant",
   "costa_vida",         9.92, "restaurant",
-  "walmart",            9.43, "misc",
+  "wal_mart",            9.43, "misc",
   "crumbl",             8.46, "restaurant",
   "jacks_wood_fire",   36.98, "restaurant",
   "homegoods",         32.06, "house_var",
@@ -750,7 +750,7 @@ apr_purchases <- tribble(
   "zupas",             25.36, "restaurant",
   "delta",             11.20, "vacation_louisville",
   "twisted_sugar",      7.12, "restaurant",
-  "walmart",           38.18, "gas",
+  "wal_mart",           38.18, "gas",
   "trader_joes",       64.35, "grocery",
   "hug_hes",           60.20, "restaurant",
   "hug_hes",            4.86, "grocery",
@@ -856,7 +856,7 @@ may_purchases <- tribble(
   "apple_spice",            12.08, "restaurant",
   "seven_eleven",            4.12, "restaurant",
   "slackwater",              6.22, "restaurant",
-  "walmart",               104.86, "misc",
+  "wal_mart",               104.86, "misc",
   "slackwater",             16.00, "restaurant",
   "salon",                 312.41, "mothers_day",
   "panda",                  10.61, "restaurant",
@@ -890,8 +890,8 @@ may_purchases <- tribble(
   "flying_j",                7.82, "restaurant",
   "maverik",                45.23, "gas",
   "jamba",                  18.70, "mothers_day",
-  "walmart",                 3.00, "grocery",
-  "walmart",                 7.15, "house_var",
+  "wal_mart",                 3.00, "grocery",
+  "wal_mart",                 7.15, "house_var",
   "adobe",                  10.69, "subscription",
   "dominion",               71.82, "house_essential",
   #"costco",                151.33, "misc",
@@ -915,7 +915,7 @@ may_purchases <- tribble(
   "autozone",               50.27, "car",
   "logans_heroes",           9.26, "restaurant",
   "in_n_out",                5.67, "restaurant",
-  "walmart",                32.08, "personal",
+  "wal_mart",                32.08, "personal",
   "home_depot",             69.51, "house_var",
   "ulta",                   55.00, "personal",
   "ulta",                   22.12, "jessi_wedding",
@@ -929,25 +929,35 @@ may_purchases <- tribble(
   "flights_from_home",      39.00, "subscription",
   "eagle_mtn",              28.00, "golf",
   "mandarin_garden",        12.69, "restaurant",
-  "walmart",                81.30, "house_var",
+  "wal_mart",                81.30, "house_var",
   "red_barn",               20.00, "restaurant",
   "quantum_fiber",          75.00, "house_essential",
   "student_loan",          136.10, "debt",
   "allstate",               11.50, "subscription",
-  "target",                 71.16, "misc",
+  #"target",                 71.16, "misc",
+  "target",                 36.00, "clothes",
+  "target",                 35.16, "personal",
   "noodles",                12.50, "restaurant",
   "harmons",                 4.72, "restaurant",
   "chevron",                38.48, "gas",
   "amazon",                 25.73, "misc",
-  "target",                 37.53, "misc",
+  #"target",                 37.53, "misc",
+  "target",                 10.00, "clothes",
+  "target",                 25.00, "baby",
   "target",                -16.09, "baby",
-  "amazon",                 35.34, "misc",
-  "amazon",                 32.88, "misc",
-  "walmart",                93.70, "misc",
+  #"amazon",                 35.34, "misc",
+  "amazon",                 17.00, "clothes",
+  "amazon",                 18.34, "personal",
+  "amazon",                 32.88, "baby",
+  #"wal_mart",                93.70, "misc",
+  "wal_mart",                24.37, "baby",
+  "wal_mart",                69.33, "grocery",
   "target",                 30.47, "misc",
   "blacksmith",              9.96, "restaurant",
   "parking",                 3.49, "misc",
-  "walmart",                59.68, "misc",
+  #"wal_mart",                59.68, "misc",
+  "wal_mart",                19.00, "baby",
+  "wal_mart",                40.68, "grocery",
   "royals_hot_chicken",     23.20, "vacation_louisville",
   "roku",                   15.01, "subscription",
   "lueberry_acai",           9.54, "vacation_louisville",
@@ -986,28 +996,28 @@ may_purchases <- tribble(
   "valero",                 34.86, "vacation_louisville",
   "cincinnati_parking",      5.50, "vacation_louisville",
   "sdf_finish",              3.29, "vacation_louisville",
-  "amazon",                 34.22, "misc",
-  "amazon",                 21.01, "misc",
-  "walmart",                35.18, "misc",
+  "amazon",                 34.22, "baby",
+  "amazon",                 21.01, "grocery",
+  "wal_mart",                35.18, "gas",
   "chilis",                 12.18, "vacation_louisville",
   "apple",                  10.99, "subscription",
   "twisted_sugar",          17.55, "restaurant",
   "maceys",                 28.27, "grocery",
-  "amazon",                187.31, "misc",
-  "amazon",                 29.16, "misc",
-  "amazon",                 26.16, "misc",
+  "amazon",                187.31, "clothes",
+  "amazon",                 29.16, "grocery",
+  "amazon",                 26.16, "clothes",
   "smiths",                 47.53, "grocery",
   "sams_club",              12.72, "grocery",
   "sams_club",               6.97, "restaurant",
   "wendys",                  1.94, "restaurant",
   "arbys",                   7.05, "restaurant",
   "stacked",                 8.02, "restaurant",
-  "recreation_registration",35.00, "misc",
+  "recreation_registration",35.00, "hobby",
   "karie_annes",             9.56, "restaurant",
-  "walmart",                 5.32, "misc",
-  "walmart",                33.84, "misc",
+  "wal_mart",                 5.32, "family",
+  "wal_mart",                33.84, "gas",
   "home_depot",            129.40, "house_var",
-  "sams_club",              39.01, "misc",
+  "sams_club",              39.01, "house_var",
   "logan_heroes",           16.01, "restaurant",
   "arbys",                   6.04, "restaurant",
   "smiths",                 16.23, "grocery",
@@ -1051,9 +1061,9 @@ jun_purchases <- tribble(
   "jersey_mikes",      19.94, "restaurant",
   "homegoods",         29.00, "house_var",
   "minky_couture",     86.84, "personal",
-  #"walmart",          129.26, "misc",
-  "walmart",           48.62, "house_var",
-  "walmart",           80.64, "baby",
+  #"wal_mart",          129.26, "misc",
+  "wal_mart",           48.62, "house_var",
+  "wal_mart",           80.64, "baby",
   "papa_murphy",       11.77, "restaurant",
   "maceys",            35.67, "grocery",
   "crumbl",             9.16, "restaurant",
@@ -1091,7 +1101,7 @@ jun_purchases <- tribble(
   "carters",          109.13, "new_baby",
   "zao",               21.54, "restaurant",
   "adobe",             10.69, "subscription",
-  "walmart",           30.60, "gas",
+  "wal_mart",           30.60, "gas",
   "valey_view",        15.00, "golf",
   "burger_stop",       13.83, "restaurant",
   "vv_pro_shop",        3.79, "restaurant",
@@ -1116,10 +1126,82 @@ jun_purchases <- tribble(
   "kenzie_stinger",    65.00, "maddie_bday",
   "home_depot",       250.00, "maddie_bday",
   "home_depot",        17.14, "house_var",
-  "walmart",           26.61, "gas",
+  "wal_mart",           26.61, "gas",
   "sonic",              3.23, "restaurant",
   "amazon",            28.95, "bday",
-  "maverik",            4.12, "restaurant"
+  "maverik",            4.12, "restaurant",
+  "wal_mart",            9.21, "maddie_bday",
+  "home_depot",        61.72, "maddie_bday",
+  "panda_express",     13.56, "restaurant",
+  "maverik",           12.43, "restaurant",
+  "wendys",             7.30, "restaurant",
+  "nielsens",          19.65, "restaurant",
+  "jersey_mikes",      18.08, "restaurant",
+  "home_depot",        19.23, "maddie_bday",
+  "chick_fila",         5.56, "restaurant",
+  "live_nation",       40.00, "maddie_bday",
+  "live_nation",       67.25, "hobby",
+  #"target",           122.09, "misc",
+  "target",            22.05, "grocery",
+  "target",            12.99, "baby",
+  "target",            87.05, "personal",
+  "philadelphia_sub",  27.86, "maddie_bday",
+  "keva_juice",        25.81, "maddie_bday",
+  "diamond_concesisons",7.58, "restaurant",
+  "wendys",             4.54, "restaurant",
+  "maverik",           36.25, "gas",
+  "great_harvest",      5.01, "maddie_bday",
+  "cutlers",           38.19, "restaurant",
+  "roku",              15.01, "subscription",
+  "super_8",          177.12, "fathers_day",
+  "wal_mart",           24.66, "gas",
+  "wal_mart",           15.87, "personal",
+  "snakebite",         69.69, "restaurant",
+  "taco_time",          9.07, "restaurant",
+  "sams_club",         20.70, "grocery",
+  "fast_stop",          6.20, "restaurant",
+  "sweet_lake",        34.00, "restaurant",
+  "smiths",             6.14, "grocery",
+  "salsa_del_diablo",   9.92, "grocery",
+  "maverik",           40.54, "gas",
+  "apple",              2.99, "subscription",
+  "quick_quack",       41.99, "subscription",
+  "wal_mart",           25.95, "hobby",
+  # BEGIN RECOVERY
+  "sams_club",        112.78, "hobby",
+  "sams_club",        100.19, "grocery",
+  "taco_bell",          4.03, "restaurant",
+  "lowes",             78.26, "maddie_bday",
+  "lees",              48.96, "grocery",
+  "great_harvest",     18.69, "grocery",
+  "maverik",            4.04, "restaurant",
+  "planet_fitness",    10.70, "subscription",
+  "rocky_mountain",    35.77, "house_essential",
+  "holiday_market",    11.85, "maddie_bday",
+  "nibley_city",      107.49, "house_essential",
+  "dollar_tree",        1.34, "maddie_bday",
+  "rocks",            750.00, "maddie_bday",
+  "quantum_fiber",     75.00, "house_essential",
+  "amazon",           -93.28, "clothes",
+  "apple",             10.99, "subscription",
+  "dominos",           15.10, "restaurant",
+  "maverik",            3.08, "restaurant",
+  "home_depot",        15.11, "maddie_bday",
+  "maverik",           21.55, "gas",
+  "maverik",            4.04, "restaurant",
+  #"wal_mart",          29.12, "misc",
+  "wal_mart",          13.00, "house_var",
+  "wal_mart",          26.12, "grocery",
+  "home_depot",         4.68, "maddie_bday",
+  #"sams_club",         45.38, "misc",
+  "sams_club",         13.00, "house_var",
+  "sams_club",         32.38, "grocery",
+  "lees",              28.16, "grocery",
+  "homegoods",        139.09, "becks_kids",
+  "chick_fila",         5.56, "restaurant",
+  "home_depot",        -7.98, "maddie_bday",
+  "in_n_out",          11.45, "restaurant",
+  "studen_loan",      136.10, "debt"
 ) %>% 
   mutate(month = "jun")
 
@@ -1129,6 +1211,46 @@ jun_categories <- category_function(jun_purchases, "jun")
 
 
 ```    
+  
+```{r jul}
+# jul Purchases -------------------------------------------------------
+
+jul_purchases <- tribble(
+  ~place,            ~amount, ~category,
+  "smiths",            25.19, "grocery",
+  "costco",             9.88, "restaurant",
+  "costco",            64.20, "subscription",
+  "costco",            41.66, "grocery",
+  "allstate",        -810.44, "car",
+  "progressive",     1185.00, "car",
+  "allstate",        -115.50, "house_essential",
+  "logan_river",        9.00, "golf",
+  "maverik",           34.99, "gas",
+  "harmons",           57.35, "grocery",
+  "twisted_sugar",      8.62, "restaurant",
+  "sams_club",         50.05, "grocery",
+  "maceys",            24.92, "grocery",
+  "kyte_baby",         79.55, "new_baby",
+  "amazon",            16.08, "subscription",
+  "super_chix",        17.26, "restaurant",
+  "seven_eleven",       5.11, "restaurant",
+  "fizz_n_fryz",       18.65, "restaurant",
+  "wal_mart",           35.95, "gas",
+  "kneaders",           8.62, "restaurant",
+  "great_clips",       26.00, "personal",
+  "fizz_n_fryz",        6.46, "restaurant",
+  "logan_river",       18.00, "golf"
+  # July 6
+) %>% 
+  mutate(month = "jul")
+
+jul_breakdown <- breakdown_function(jul_purchases)
+
+jul_categories <- category_function(jul_purchases, "jul")
+
+
+```  
+
 <!-- Data Preparation -->
   
 ```{r Yearly Aggregate Data Prep}
@@ -1141,8 +1263,9 @@ all_months_stacked <- jan_purchases %>%
   bind_rows(apr_purchases) %>% 
   bind_rows(may_purchases) %>% 
   bind_rows(jun_purchases) %>% 
+  bind_rows(jul_purchases) %>% 
   mutate(
-    place = case_when(place == "walmart" ~ "walmart",
+    place = case_when(place == "wal_mart" ~ "wal_mart",
                       TRUE ~ place)
   )
 
@@ -1161,6 +1284,7 @@ wrap_up_categories <- tribble(
   "jessi_bday"             , "holidays",
   "josie_bday"             , "holidays",   
   "bday"                   , "holidays",  
+  "fathers_day"            , "holidays",
   "photography"            , "hobby",
   "football"               , "hobby",
   "golf"                   , "hobby",
@@ -1193,7 +1317,8 @@ categories_together <- jan_categories %>%
   bind_rows(mar_categories) %>% 
   bind_rows(apr_categories) %>% 
   bind_rows(may_categories) %>% 
-  bind_rows(jun_categories)
+  bind_rows(jun_categories) %>% 
+  bind_rows(jul_categories)
 
 categories_together_cleaned <- categories_together %>%
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
@@ -1298,6 +1423,85 @@ amount_to_work_with - cc_debt
 
 ```
 
+```{r grocery_gas_budget}
+budget_category <- c("grocery", "car", "debt", "subscription", "house_essential", "gas")
+
+
+grocery_gas_budget <- tribble(
+  ~place,            ~amount, ~category,
+  #June 24
+  "sams_club",        112.78, "hobby",
+  "sams_club",        100.19, "grocery",
+  "taco_bell",          4.03, "restaurant",
+  "lowes",             78.26, "maddie_bday",
+  "lees",              48.96, "grocery",
+  "great_harvest",     18.69, "grocery",
+  "maverik",            4.04, "restaurant",
+  "planet_fitness",    10.70, "subscription",
+  "rocky_mountain",    35.77, "house_essential",
+  "holiday_market",    11.85, "maddie_bday",
+  "nibley_city",      107.49, "house_essential",
+  "dollar_tree",        1.34, "maddie_bday",
+  "apple",             10.99, "subscription",
+  "dominos",           15.10, "restaurant",
+  "maverik",            3.08, "restaurant",
+  "home_depot",        15.11, "maddie_bday",
+  "maverik",           21.55, "gas",
+  "maverik",            4.04, "restaurant",
+  #"wal_mart",          29.12, "misc",
+  "wal_mart",          13.00, "house_var",
+  "wal_mart",          26.12, "grocery",
+  "home_depot",         4.68, "maddie_bday",
+  #"sams_club",         45.38, "misc",
+  "sams_club",         13.00, "house_var",
+  "sams_club",         32.38, "grocery",
+  "lees",              28.16, "grocery",
+  "homegoods",        139.09, "becks_kids",
+  "chick_fila",         5.56, "restaurant",
+  "home_depot",        -7.98, "maddie_bday",
+  "in_n_out",          11.45, "restaurant",
+  "studen_loan",      136.10, "debt",
+  # July Start
+  "smiths",            25.19, "grocery",
+  "costco",             9.88, "restaurant",
+  "costco",            64.20, "subscription",
+  "costco",            41.66, "grocery",
+  "allstate",        -810.44, "car",
+  "progressive",     1185.00, "car",
+  "allstate",        -115.50, "house_essential",
+  "logan_river",        9.00, "golf",
+  "maverik",           34.99, "gas",
+  "harmons",           57.35, "grocery",
+  "twisted_sugar",      8.62, "restaurant",
+  "sams_club",         50.05, "grocery",
+  "maceys",            24.92, "grocery",
+  "kyte_baby",         79.55, "new_baby",
+  "amazon",            16.08, "subscription",
+  "super_chix",        17.26, "restaurant",
+  "seven_eleven",       5.11, "restaurant",
+  "fizz_n_fryz",       18.65, "restaurant",
+  "wal_mart",           35.95, "gas",
+  "kneaders",           8.62, "restaurant",
+  "great_clips",       26.00, "personal",
+  "fizz_n_fryz",        6.46, "restaurant",
+  "logan_river",       18.00, "golf"
+  # July 6
+) %>% 
+  left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
+  mutate(category = coalesce(new_category, category)) %>% 
+  select(-new_category) %>% 
+  group_by(category) %>% 
+  mutate(tot = sum(amount)) %>% 
+  ungroup() %>% 
+  arrange(desc(tot), desc(amount)) %>% 
+  select(-tot) %>% 
+  mutate(
+    budget = if_else(category %in% budget_category, "Inside Budget", "Outside Budget")
+  )
+
+
+```
+
 <!-- Data Display -->
   
 # Year To Date
@@ -1316,8 +1520,8 @@ yearly_reactable <- categories_together_cleaned %>%
       Mar       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
       Apr       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
       May       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
-      Jun       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
-
+      Jun       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
+      Jul       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
     )
   )
 ```
@@ -1333,8 +1537,8 @@ Previous Month {Left} vs Current Month {Right}
 
 ```{r Month Comparison}
 fluidRow(
-  column(6, wrap_up_reactable(mar_purchases)),
-  column(6, wrap_up_reactable(apr_purchases))
+  column(6, wrap_up_reactable(may_purchases)),
+  column(6, wrap_up_reactable(jun_purchases))
 )
 
 ```
@@ -1415,18 +1619,41 @@ all_months_stacked %>%
   ) 
 ```
 
+# Grocery Gas Budget {.tabset}
+
+**`r as.numeric(difftime(today(),as.Date("2024-06-23")))` Days since beginning budget**
+
+```{r display grocery gas}
+grocery_gas_budget %>% 
+  arrange() %>% 
+  reactable(
+    groupBy = c("budget", "category"),
+    columns = list(
+      budget = colDef(name = "Budget", footer = "Total:"),
+      category = colDef(name = "Category"),
+      place = colDef(name = "Place"),
+      amount = colDef(
+        name = "Amount",
+        aggregate = "sum", 
+        format = colFormat(currency = "USD"), 
+        footer = function(values) sprintf("$%.2f", sum(values))
+      )
+    ),
+    pagination = FALSE
+  )
+```
+
+
 <!-- Random Other Things -->
   
 ```{r Debts, eval = FALSE}
 debts_df <- tribble(
   ~who,             ~amount, ~min_payment,  ~category,
   "Mick",              7000,            0,  "Fence",
-  "Mick",              2000,            0,  "Marriott_Weeks",
-  "Aidvantage",        2041,          137,  "Student_Loans",
+  "Mick",              4000,            0,  "Marriott_Weeks",
   "Aidvantage",       11883,           23,  "Student_Loans",
-  "America_First",     9912,          340,  "Car_Brutus",
   "Church",           24300,            0,  "Tithing", # As of End of August 23
-  "American_Express",  1106,          400,  "Credit_Card"
+  #"American_Express",  1106,          400,  "Credit_Card"
 )
 ```
 
@@ -1463,7 +1690,7 @@ april_purchases %>%
     defaultColDef = colDef(footerStyle = list(fontWeight = "bold"))
   )
 
-# From Jan - Aug 15 of the misc purchases are from walmart
+# From Jan - Aug 15 of the misc purchases are from wal_mart
 
 
 # Misc Analysis
