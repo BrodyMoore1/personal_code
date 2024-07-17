@@ -1239,8 +1239,51 @@ jul_purchases <- tribble(
   "kneaders",           8.62, "restaurant",
   "great_clips",       26.00, "personal",
   "fizz_n_fryz",        6.46, "restaurant",
-  "logan_river",       18.00, "golf"
+  "logan_river",       18.00, "golf",
+  "logan_farmers_mkt", 13.00, "grocery",
   # July 6
+  "in_n_out",          13.07, "restaurant",
+  "kneaders",           8.62, "restaurant",
+  "smiths",            67.84, "grocery",
+  "sams_club",         54.73, "grocery",
+  "sams_club",          0.96, "restaurant",
+  "in_n_out",          14.31, "restaurant",
+  "great_harvest",      7.10, "grocery",
+  "taco_bell",          7.10, "restaurant",
+  "twisted_sugar",      5.39, "restaurant",
+  "homegoods",         24.59, "house_var",
+  "walmart",           29.59, "gas",
+  "in_n_out",           8.59, "family",
+  "karie_annes",       11.24, "restaurant",
+  "costa_vida",        10.79, "restaurant",
+  "smiths_ballpark",    9.24, "restaurant",
+  "seven_eleven",       3.09, "restaurant",
+  "sams_club",         19.24, "house_var",
+  "interest",         -89.54, "debt",
+  "interest",          -9.89, "debt",
+  "chick_fila",        11.82, "restaurant",
+  "kyte_baby",        185.15, "new_baby",
+  "kyte_baby",         65.31, "new_baby",
+  "kyte_baby",         56.73, "new_baby",
+  "chick_fila",         5.56, "restaurant",
+  "sams_club",          6.97, "restaurant",
+  "panda_express",     18.04, "restaurant",
+  "maverik",            4.12, "restaurant",
+  "adobe",             10.69, "subscription",
+  "speedway",          39.36, "gas",
+  "salsa_del_diablo",  15.43, "grocery",
+  "green_jar",          8.68, "restaurant",
+  "walmart",          144.72, "misc",
+  "zupas",             14.03, "restaurant",
+  "tj_maxx",           45.46, "clothes",
+  "maverik",           27.53, "gas",
+  "rumbi",             19.41, "restaurant",
+  "maverik",           12.20, "restaurant",
+  "logan_river",       18.00, "golf",
+  "dominion_energy",   22.28, "house_essential",
+  "hoa",               83.00, "house_essential",
+  "mortgage",        3856.79, "house_payment"
+  # July 16
 ) %>% 
   mutate(month = "jul")
 
@@ -1424,7 +1467,7 @@ amount_to_work_with - cc_debt
 ```
 
 ```{r grocery_gas_budget}
-budget_category <- c("grocery", "car", "debt", "subscription", "house_essential", "gas")
+budget_category <- c("grocery", "car", "debt", "subscription", "house_essential", "gas", "house_payment")
 
 
 grocery_gas_budget <- tribble(
@@ -1484,8 +1527,51 @@ grocery_gas_budget <- tribble(
   "kneaders",           8.62, "restaurant",
   "great_clips",       26.00, "personal",
   "fizz_n_fryz",        6.46, "restaurant",
-  "logan_river",       18.00, "golf"
+  "logan_river",       18.00, "golf",
+  "logan_farmers_mkt", 13.00, "grocery",
   # July 6
+    "in_n_out",          13.07, "restaurant",
+  "kneaders",           8.62, "restaurant",
+  "smiths",            67.84, "grocery",
+  "sams_club",         54.73, "grocery",
+  "sams_club",          0.96, "restaurant",
+  "in_n_out",          14.31, "restaurant",
+  "great_harvest",      7.10, "grocery",
+  "taco_bell",          7.10, "restaurant",
+  "twisted_sugar",      5.39, "restaurant",
+  "homegoods",         24.59, "house_var",
+  "walmart",           29.59, "gas",
+  "in_n_out",           8.59, "family",
+  "karie_annes",       11.24, "restaurant",
+  "costa_vida",        10.79, "restaurant",
+  "smiths_ballpark",    9.24, "restaurant",
+  "seven_eleven",       3.09, "restaurant",
+  "sams_club",         19.24, "house_var",
+  "interest",         -89.54, "debt",
+  "interest",          -9.89, "debt",
+  "chick_fila",        11.82, "restaurant",
+  "kyte_baby",        185.15, "new_baby",
+  "kyte_baby",         65.31, "new_baby",
+  "kyte_baby",         56.73, "new_baby",
+  "chick_fila",         5.56, "restaurant",
+  "sams_club",          6.97, "restaurant",
+  "panda_express",     18.04, "restaurant",
+  "maverik",            4.12, "restaurant",
+  "adobe",             10.69, "subscription",
+  "speedway",          39.36, "gas",
+  "salsa_del_diablo",  15.43, "grocery",
+  "green_jar",          8.68, "restaurant",
+  "walmart",          144.72, "misc",
+  "zupas",             14.03, "restaurant",
+  "tj_maxx",           45.46, "clothes",
+  "maverik",           27.53, "gas",
+  "rumbi",             19.41, "restaurant",
+  "maverik",           12.20, "restaurant",
+  "logan_river",       18.00, "golf",
+  "dominion_energy",   22.28, "house_essential",
+  "hoa",               83.00, "house_essential",
+  "mortgage",        3856.79, "house_payment"
+  # July 16
 ) %>% 
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
   mutate(category = coalesce(new_category, category)) %>% 
