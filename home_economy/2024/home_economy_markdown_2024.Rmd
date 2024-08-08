@@ -1282,8 +1282,93 @@ jul_purchases <- tribble(
   "logan_river",       18.00, "golf",
   "dominion_energy",   22.28, "house_essential",
   "hoa",               83.00, "house_essential",
-  "mortgage",        3856.79, "house_payment"
+  "mortgage",        3856.79, "house_payment",
   # July 16
+  "planet_fitness",    10.70, "subscription",
+  "rocky_mountain",    81.40, "house_essential",
+  "nibley_city",      116.94, "house_essential",
+  "zipz",              22.61, "restaurant",
+  "twisted_sugar",      8.62, "restaurant",
+  "jersey_mikes",      20.30, "restaurant",
+  "maceys",            22.40, "grocery",
+  "kyte_baby",        -65.31, "new_baby",
+  "great_harvest",      7.10, "grocery",
+  "dominos",           15.10, "restaurant",
+  "karie_annes",        8.37, "restaurant",
+  "amazon",            90.12, "misc",
+  "maceys",            24.76, "grocery",
+  "chevron",           36.09, "gas",
+  "center_street_gril",28.92, "restaurant",
+  "aggie_ice_cream",   13.15, "restaurant",
+  "quantum_fiber",     75.00, "house_essential",
+  # July 21
+  "walmart",           26.23, "gas",
+  "sonic",              6.45, "restaurant",
+  "roku",              15.01, "subscription",
+  "harmons",            9.94, "grocery",
+  "marshalls",          8.57, "baby",
+  "trader_joes",       28.98, "grocery",
+  "sweet_lake",         6.53, "restaurant",
+  "noodles",           11.13, "restaurant",
+  "chick_fila",         3.62, "restaurant",
+  "walmart",           29.53, "personal",
+  "lids",              16.12, "clothes",
+  "carters",           24.81, "new_baby",
+  "quick_quack",       41.99, "subscription",
+  "sams_club",         37.45, "gas",
+  "openai",            10.70, "hobby",
+  "apple",              2.99, "subscription",
+  "spitz",             14.61, "restaurant",
+  "scheels",           30.03, "clothes",
+  "keva_juice",        12.90, "restaurant",
+  "maverik",           44.10, "gas",
+  "rosehaven",        114.00, "personal",
+  "kyte_baby",        -56.73, "new_baby",
+  "crumbl",             4.31, "restaurant",
+  "chip_cookie",       13.93, "restaurant",
+  "taco_bell",          3.11, "restaurant",
+  "maceys",            58.29, "grocery",
+  "arbys",             16.38, "restaurant",
+  "walmart",           92.67, "personal",
+  "lebeaus",           33.22, "restaurant",
+  "maverik",           40.74, "gas",
+  "maceys",            11.32, "grocery",
+  "apple",             10.99, "subscription",
+  "ulta",              85.61, "personal",
+  "sierra",           128.36, "clothes",
+  #"sams_club",        147.20, "misc",
+  "sams_club",         42.00, "baby",
+  "sams_club",         12.98, "clothes",
+  "sams_club",         20.00, "house_var",
+  "sams_club",         72.22, "grocery",
+  "sams_club",          5.76, "restaurant",
+  "le_croissant",       5.00, "restaurant",
+  "great_harvest",      6.75, "grocery",
+  "brazilian_paradise", 9.78, "restaurant",
+  "in_n_out",          15.01, "restaurant",
+  "smiths",            27.02, "grocery",
+  "progressive",       13.00, "misc",
+  "costco",             4.84, "restaurant",
+  "costco",            17.49, "grocery",
+  "student_loan",     136.10, "debt",
+  "venmo_dresser",    350.00, "new_baby",
+  "jimmy_johns",        9.00, "restaurant",
+  "krystal",          116.00, "subscription",
+  "krystal",          116.00, "subscription",
+  "costco",             2.90, "restaurant",
+  # July 29 
+  "twisted_sugar",     11.97, "restaurant",
+  "tj_maxx",           36.61, "misc",
+  "walmart",           63.03, "walmart",
+  "old_navy",          81.27, "misc",
+  "locals",            17.11, "misc",
+  "chick_fila",        17.38, "restaurant",
+  "walmart",           25.94, "gas",
+  "pro_image_sport",   32.16, "new_baby",
+  "slc_golf",          18.00, "golf",
+  "mcdonalds",          2.18, "restaurant",
+  "walmart",          -18.13, "misc",
+  "amazon",           -16.82, "misc"
 ) %>% 
   mutate(month = "jul")
 
@@ -1293,6 +1378,53 @@ jul_categories <- category_function(jul_purchases, "jul")
 
 
 ```  
+  
+```{r aug}
+# aug Purchases -------------------------------------------------------
+
+aug_purchases <- tribble(
+  ~place,            ~amount, ~category,
+  "ross",              25.65, "new_baby",
+  "mountain_donut",    18.66, "restaurant",
+  "walmart",           35.82, "gas",
+  "pretty_bird",       37.51, "restaurant",
+  "mcdonalds",          2.27, "restaurant",
+  "costa_vida",        19.20, "restaurant",
+  "amazon",            93.08, "misc",
+  "sams_club",         84.75, "grocery",
+  "sams_club",          6.97, "restaurant",
+  "maverik",            4.04, "restaurant",
+  "maceys",            70.87, "grocery",
+  "zipz",              31.61, "restaurant",
+  "expositions_foods",  8.66, "restaurant",
+  "amazon",            16.08, "subscription",
+  "maverik",            4.04, "restaurant",
+  "in_n_out",          11.45, "restaurant",
+  "amazon",             7.48, "misc",
+  "tropical_smoothie",  8.41, "restaurant",
+  "mo_bettahs",        10.09, "restaurant",
+  "walmart",           44.49, "house_var",
+  "maverik",            4.04, "restaurant",
+  "homegoods",         48.12, "house_var",
+  "great_harvest",     12.80, "restaurant",
+  "taco_bell",         10.53, "restaurant",
+  "in_n_out",          19.87, "restaurant",
+  #"walmart",          116.15, "misc",
+  "walmart",           66.00, "new_baby",
+  "walmart",           50.15, "personal",
+  "walmart",            1.30, "misc",
+  "costco",            44.75, "grocery"
+  # August 8
+) %>% 
+  mutate(month = "aug")
+
+aug_breakdown <- breakdown_function(aug_purchases)
+
+aug_categories <- category_function(aug_purchases, "aug")
+
+
+```  
+  
 
 <!-- Data Preparation -->
   
@@ -1307,6 +1439,7 @@ all_months_stacked <- jan_purchases %>%
   bind_rows(may_purchases) %>% 
   bind_rows(jun_purchases) %>% 
   bind_rows(jul_purchases) %>% 
+  bind_rows(aug_purchases) %>% 
   mutate(
     place = case_when(place == "wal_mart" ~ "wal_mart",
                       TRUE ~ place)
@@ -1361,7 +1494,8 @@ categories_together <- jan_categories %>%
   bind_rows(apr_categories) %>% 
   bind_rows(may_categories) %>% 
   bind_rows(jun_categories) %>% 
-  bind_rows(jul_categories)
+  bind_rows(jul_categories) %>% 
+  bind_rows(aug_categories)
 
 categories_together_cleaned <- categories_together %>%
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
@@ -1570,8 +1704,124 @@ grocery_gas_budget <- tribble(
   "logan_river",       18.00, "golf",
   "dominion_energy",   22.28, "house_essential",
   "hoa",               83.00, "house_essential",
-  "mortgage",        3856.79, "house_payment"
+  "mortgage",        3856.79, "house_payment",
   # July 16
+  "planet_fitness",    10.70, "subscription",
+  "rocky_mountain",    81.40, "house_essential",
+  "nibley_city",      116.94, "house_essential",
+  "zipz",              22.61, "restaurant",
+  "twisted_sugar",      8.62, "restaurant",
+  "jersey_mikes",      20.30, "restaurant",
+  "maceys",            22.40, "grocery",
+  "kyte_baby",        -65.31, "new_baby",
+  "great_harvest",      7.10, "grocery",
+  "dominos",           15.10, "restaurant",
+  "karie_annes",        8.37, "restaurant",
+  "amazon",            90.12, "misc",
+  "maceys",            24.76, "grocery",
+  "chevron",           36.09, "gas",
+  "center_street_gril",28.92, "restaurant",
+  "aggie_ice_cream",   13.15, "restaurant",
+  "quantum_fiber",     75.00, "house_essential",
+  # July 21
+  "walmart",           26.23, "gas",
+  "sonic",              6.45, "restaurant",
+  "roku",              15.01, "subscription",
+  "harmons",            9.94, "grocery",
+  "marshalls",          8.57, "baby",
+  "trader_joes",       28.98, "grocery",
+  "sweet_lake",         6.53, "restaurant",
+  "noodles",           11.13, "restaurant",
+  "chick_fila",         3.62, "restaurant",
+  "walmart",           29.53, "personal",
+  "lids",              16.12, "clothes",
+  "carters",           24.81, "new_baby",
+  "quick_quack",       41.99, "subscription",
+  "sams_club",         37.45, "gas",
+  "openai",            10.70, "hobby",
+  "apple",              2.99, "subscription",
+  "spitz",             14.61, "restaurant",
+  "scheels",           30.03, "clothes",
+  "keva_juice",        12.90, "restaurant",
+  "maverik",           44.10, "gas",
+  "rosehaven",        114.00, "personal",
+  "kyte_baby",        -56.73, "new_baby",
+  "crumbl",             4.31, "restaurant",
+  "chip_cookie",       13.93, "restaurant",
+  "taco_bell",          3.11, "restaurant",
+  "maceys",            58.29, "grocery",
+  "arbys",             16.38, "restaurant",
+  "walmart",           92.67, "personal",
+  "lebeaus",           33.22, "restaurant",
+  "maverik",           40.74, "gas",
+  "maceys",            11.32, "grocery",
+  "apple",             10.99, "subscription",
+  "ulta",              85.61, "personal",
+  "sierra",           128.36, "clothes",
+  #"sams_club",        147.20, "misc",
+  "sams_club",         42.00, "baby",
+  "sams_club",         12.98, "clothes",
+  "sams_club",         20.00, "house_var",
+  "sams_club",         72.22, "grocery",
+  "sams_club",          5.76, "restaurant",
+  "le_croissant",       5.00, "restaurant",
+  "great_harvest",      6.75, "grocery",
+  "brazilian_paradise", 9.78, "restaurant",
+  "in_n_out",          15.01, "restaurant",
+  "smiths",            27.02, "grocery",
+  "progressive",       13.00, "misc",
+  "costco",             4.84, "restaurant",
+  "costco",            17.49, "grocery",
+  "student_loan",     136.10, "debt",
+  "venmo_dresser",    350.00, "new_baby",
+  "jimmy_johns",        9.00, "restaurant",
+  "krystal",          116.00, "subscription",
+  "krystal",          116.00, "subscription",
+  "costco",             2.90, "restaurant",
+  # July 29 
+  "twisted_sugar",     11.97, "restaurant",
+  "tj_maxx",           36.61, "misc",
+  "walmart",           63.03, "walmart",
+  "old_navy",          81.27, "misc",
+  "locals",            17.11, "misc",
+  "chick_fila",        17.38, "restaurant",
+  "walmart",           25.94, "gas",
+  "pro_image_sport",   32.16, "new_baby",
+  "slc_golf",          18.00, "golf",
+  "mcdonalds",          2.18, "restaurant",
+  "walmart",          -18.13, "misc",
+  "amazon",           -16.82, "misc",
+    "ross",              25.65, "new_baby",
+  "mountain_donut",    18.66, "restaurant",
+  "walmart",           35.82, "gas",
+  "pretty_bird",       37.51, "restaurant",
+  "mcdonalds",          2.27, "restaurant",
+  "costa_vida",        19.20, "restaurant",
+  "amazon",            93.08, "misc",
+  "sams_club",         84.75, "grocery",
+  "sams_club",          6.97, "restaurant",
+  "maverik",            4.04, "restaurant",
+  "maceys",            70.87, "grocery",
+  "zipz",              31.61, "restaurant",
+  "expositions_foods",  8.66, "restaurant",
+  "amazon",            16.08, "subscription",
+  "maverik",            4.04, "restaurant",
+  "in_n_out",          11.45, "restaurant",
+  "amazon",             7.48, "misc",
+  "tropical_smoothie",  8.41, "restaurant",
+  "mo_bettahs",        10.09, "restaurant",
+  "walmart",           44.49, "house_var",
+  "maverik",            4.04, "restaurant",
+  "homegoods",         48.12, "house_var",
+  "great_harvest",     12.80, "restaurant",
+  "taco_bell",         10.53, "restaurant",
+  "in_n_out",          19.87, "restaurant",
+  #"walmart",          116.15, "misc",
+  "walmart",           66.00, "new_baby",
+  "walmart",           50.15, "personal",
+  "walmart",            1.30, "misc",
+  "costco",            44.75, "grocery"
+  # August 8th
 ) %>% 
   left_join(wrap_up_categories, by = c("category" = "current_category")) %>% 
   mutate(category = coalesce(new_category, category)) %>% 
@@ -1607,7 +1857,8 @@ yearly_reactable <- categories_together_cleaned %>%
       Apr       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
       May       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
       Jun       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
-      Jul       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
+      Jul       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values))),
+      Aug       = colDef(format = colFormat(currency = "USD"), footer = function(values) sprintf("$%.2f", sum(values)))
     )
   )
 ```
@@ -1623,8 +1874,8 @@ Previous Month {Left} vs Current Month {Right}
 
 ```{r Month Comparison}
 fluidRow(
-  column(6, wrap_up_reactable(may_purchases)),
-  column(6, wrap_up_reactable(jun_purchases))
+  column(6, wrap_up_reactable(jun_purchases)),
+  column(6, wrap_up_reactable(jul_purchases))
 )
 
 ```
