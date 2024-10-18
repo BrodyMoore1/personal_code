@@ -20,6 +20,7 @@ library(highcharter)
 library(lubridate)
 library(pins)
 library(reactable)
+library(stringr)
 opts <- getOption("highcharter.lang")
 opts$thousandsSep <- ","
 options(highcharter.lang = opts)
@@ -40,7 +41,7 @@ snapdragon::sd_board_register(environ = "prod")
 ```
 
 ```{r load data}
-results_data <- pin_get("results_pin_2023","rsconnect")
+results_data <- pin_get("results_pin_2024","rsconnect")
 
 paid_dues <- results_data$league_setup %>% 
   select(person, dues_paid) %>% 
@@ -68,30 +69,31 @@ reactable(
         }
         list(color = color)
       }
-    ),
-    October = colDef(
-      name = "October Paid",
-      style = function(value, index) {
-        if (results_data$monthly_motivosity$October[index] == TRUE) {
-          color <- "green"
-        } else if (results_data$monthly_motivosity$October[index] == FALSE) {
-          color <- "#CC0000"
-        }
-        list(color = color)
-      }
-    ),
-    November = colDef(
-      name = "November Paid",
-      style = function(value, index) {
-        if (results_data$monthly_motivosity$November[index] == TRUE) {
-          color <- "green"
-        } else if (results_data$monthly_motivosity$November[index] == FALSE) {
-          color <- "#CC0000"
-        }
-        list(color = color)
-      }
-    )
-  )
+    )#,
+    #October = colDef(
+    #  name = "October Paid",
+    #  style = function(value, index) {
+    #    if (results_data$monthly_motivosity$October[index] == TRUE) {
+    #      color <- "green"
+    #    } else if (results_data$monthly_motivosity$October[index] == FALSE) {
+    #      color <- "#CC0000"
+    #    }
+    #    list(color = color)
+    #  }
+    #)#,
+    #November = colDef(
+    #  name = "November Paid",
+    #  style = function(value, index) {
+    #    if (results_data$monthly_motivosity$November[index] == TRUE) {
+    #      color <- "green"
+    #    } else if (results_data$monthly_motivosity$November[index] == FALSE) {
+    #      color <- "#CC0000"
+    #    }
+    #    list(color = color)
+    #  }
+    #)
+  ),
+  pagination = FALSE
 )
 ```
 
@@ -112,8 +114,10 @@ reactable(
         }
         list(color = color)
       }
-    )
-  )
+    ),
+    person = colDef(name = "Person")
+  ),
+  pagination = FALSE
 )
 
 ```
@@ -129,8 +133,11 @@ reactable(
 # Current Month Standings
 
 ```{r current month standings}
+current_month_df <- results_data$current_month_standings
+names(current_month_df) <- str_to_title(gsub("_", " ", names(current_month_df)))
+
 reactable(
-  results_data$current_month_standings
+  current_month_df
 )
 ```
 
@@ -145,6 +152,7 @@ reactable(
   altered_full,
   columns = list(
    person = colDef(
+     name = "Person",
      sticky = "left"
    )
   )

@@ -3433,7 +3433,7 @@ margin-left: 0 !important;
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
                   <p class="author"><span class="glyphicon glyphicon-user"></span> <a href="mailto:bmoore1@snapfinance.com">Brody Moore</a></p>
-                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> December 05, 2023 @ 10:00AM</p>
+                        <p class="date"><span class="glyphicon glyphicon-calendar"></span> October 09, 2024 @ 10:59AM</p>
           </div>
    </div>
      
@@ -3443,7 +3443,7 @@ margin-left: 0 !important;
    
 <!-- Don't indent these lines or it will mess pre blocks indentation --> 
 <div id="main">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>results_data <span class="ot">&lt;-</span> <span class="fu">pin_get</span>(<span class="st">&quot;results_pin_2023&quot;</span>,<span class="st">&quot;rsconnect&quot;</span>)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>results_data <span class="ot">&lt;-</span> <span class="fu">pin_get</span>(<span class="st">&quot;results_pin_2024&quot;</span>,<span class="st">&quot;rsconnect&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>paid_dues <span class="ot">&lt;-</span> results_data<span class="sc">$</span>league_setup <span class="sc">%&gt;%</span> </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(person, dues_paid) <span class="sc">%&gt;%</span> </span>
@@ -3466,33 +3466,34 @@ margin-left: 0 !important;
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">color =</span> color)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">October =</span> <span class="fu">colDef</span>(</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;October Paid&quot;</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="cf">function</span>(value, index) {</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (results_data<span class="sc">$</span>monthly_motivosity<span class="sc">$</span>October[index] <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>          color <span class="ot">&lt;-</span> <span class="st">&quot;green&quot;</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> <span class="cf">if</span> (results_data<span class="sc">$</span>monthly_motivosity<span class="sc">$</span>October[index] <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>          color <span class="ot">&lt;-</span> <span class="st">&quot;#CC0000&quot;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">color =</span> color)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">November =</span> <span class="fu">colDef</span>(</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">&quot;November Paid&quot;</span>,</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="cf">function</span>(value, index) {</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (results_data<span class="sc">$</span>monthly_motivosity<span class="sc">$</span>November[index] <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>          color <span class="ot">&lt;-</span> <span class="st">&quot;green&quot;</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> <span class="cf">if</span> (results_data<span class="sc">$</span>monthly_motivosity<span class="sc">$</span>November[index] <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>          color <span class="ot">&lt;-</span> <span class="st">&quot;#CC0000&quot;</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">color =</span> color)</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-6c7f9e264e33804dced6" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-6c7f9e264e33804dced6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Brody","Nick","Magon","Gus","Kevin","Conner","Kaivan","Nate"],"September":[true,true,true,true,true,true,true,true],"October":[true,true,true,true,true,true,true,true],"November":[true,false,false,true,false,false,true,false]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"September","name":"September Paid","type":"logical","style":[{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"}]},{"id":"October","name":"October Paid","type":"logical","style":[{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"}]},{"id":"November","name":"November Paid","type":"logical","style":[{"color":"green"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"green"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"green"},{"color":"#CC0000"}]}],"dataKey":"bd7dce9044d90e7891e7b2de98757219"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    )<span class="co">#,</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">#October = colDef(</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  name = &quot;October Paid&quot;,</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  style = function(value, index) {</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    if (results_data$monthly_motivosity$October[index] == TRUE) {</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      color &lt;- &quot;green&quot;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    } else if (results_data$monthly_motivosity$October[index] == FALSE) {</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      color &lt;- &quot;#CC0000&quot;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    }</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    list(color = color)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  }</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)#,</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#November = colDef(</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  name = &quot;November Paid&quot;,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  style = function(value, index) {</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    if (results_data$monthly_motivosity$November[index] == TRUE) {</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      color &lt;- &quot;green&quot;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    } else if (results_data$monthly_motivosity$November[index] == FALSE) {</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">#      color &lt;- &quot;#CC0000&quot;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    }</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    list(color = color)</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">#  }</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">#)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">pagination =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-920e34317de0651e85af" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-920e34317de0651e85af">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Brody","Phil","Kevin","Cuyler","Magon","Kaivan","Gus","Conner","Nick","Nate","Farshad","Lin","Hoonie"],"September":[false,false,false,false,false,false,false,false,false,false,false,false,false]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"September","name":"September Paid","type":"logical","style":[{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"}]}],"pagination":false,"dataKey":"872b1f023ca53cbe1b552b687527cd5f"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="league-buy-in" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> League Buy In</h2>
@@ -3510,11 +3511,13 @@ margin-left: 0 !important;
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        }</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">color =</span> color)</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d2779a8af2a3f9811044" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d2779a8af2a3f9811044">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Brody","Nick","Magon","Gus","Jason","Kevin","Conner","Kaivan","Hoonie","Nate"],"dues_paid":[true,true,true,true,true,true,true,true,false,false]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"dues_paid","name":"Buy In Paid","type":"logical","style":[{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"#CC0000"},{"color":"#CC0000"}]}],"dataKey":"7b244c884b60c3c9b7149f936517cf41"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">person =</span> <span class="fu">colDef</span>(<span class="at">name =</span> <span class="st">&quot;Person&quot;</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">pagination =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7664f1c89c5947684ea9" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-7664f1c89c5947684ea9">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Brody","Phil","Kevin","Cuyler","Magon","Kaivan","Gus","Nick","Nate","Farshad","Lin","Conner","Dallen","Hoonie"],"dues_paid":[true,true,true,true,true,true,true,true,true,true,true,false,false,false]},"columns":[{"id":"person","name":"Person","type":"character"},{"id":"dues_paid","name":"Buy In Paid","type":"logical","style":[{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"green"},{"color":"#CC0000"},{"color":"#CC0000"},{"color":"#CC0000"}]}],"pagination":false,"dataKey":"2212204a1a960120deff315862b65348"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="previous-month-standings" class="section level1" number="2">
@@ -3522,16 +3525,19 @@ margin-left: 0 !important;
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  results_data<span class="sc">$</span>previous_month_standings</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-885cab21d67fb633715a" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-885cab21d67fb633715a">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Kevin","Gus","Nick","Conner","Brody","Kaivan","Magon","Nate"],"October_wins":[4,4,3,2,1,1,1,1],"October_pts":[559,544,567,460,533,496,479,408],"rank":[1,2,3,4,5,6,7,8]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"October_wins","name":"October_wins","type":"numeric"},{"id":"October_pts","name":"October_pts","type":"numeric"},{"id":"rank","name":"rank","type":"numeric"}],"dataKey":"0171d90621797bec121d3ac082b0fd6e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-20c9dd536e7a9d20a9c3" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-20c9dd536e7a9d20a9c3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Nate","Cuyler","Conner","Lin","Nick","Farshad","Kaivan","Brody","Magon","Hoonie","Phil","Kevin","Gus"],"September_wins":[3,3,3,3,3,2,2,2,2,2,2,1,0],"September_pts":[515,494,493,465,443,501,489,474,440,399,307,369,351],"rank":[1,2,3,4,5,6,7,8,9,10,11,12,13]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"September_wins","name":"September_wins","type":"numeric"},{"id":"September_pts","name":"September_pts","type":"numeric"},{"id":"rank","name":"rank","type":"numeric"}],"dataKey":"a79fb9523d43cd908ce40f12f78cb20b"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="current-month-standings" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Current Month Standings</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  results_data<span class="sc">$</span>current_month_standings</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-eae310c31a2f582ed85d" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-eae310c31a2f582ed85d">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Kaivan","Brody","Gus","Conner","Kevin","Magon","Nick","Nate"],"current_month_wins":[5,5,3,3,2,2,1,1],"current_month_pts":[801,748,658,522,575,559,652,539],"rank":[1,2,3,4,5,6,7,8]},"columns":[{"id":"person","name":"person","type":"character"},{"id":"current_month_wins","name":"current_month_wins","type":"numeric"},{"id":"current_month_pts","name":"current_month_pts","type":"numeric"},{"id":"rank","name":"rank","type":"numeric"}],"dataKey":"ab5ac02a08bf133fbe25e31b6acef4a3"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>current_month_df <span class="ot">&lt;-</span> results_data<span class="sc">$</span>current_month_standings</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(current_month_df) <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(<span class="fu">gsub</span>(<span class="st">&quot;_&quot;</span>, <span class="st">&quot; &quot;</span>, <span class="fu">names</span>(current_month_df)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">reactable</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  current_month_df</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f9622f976ca61faa58a0" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f9622f976ca61faa58a0">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Person":["Conner","Nate","Kevin","Brody","Phil","Kaivan","Farshad","Nick","Cuyler","Lin","Magon","Hoonie","Gus"],"Current Month Wins":[1,1,1,1,1,1,0,0,0,0,0,0,0],"Current Month Pts":[151,146,140,133,132,111,127,111,107,102,99,80,70],"Rank":[1,2,3,4,5,6,7,8,9,10,11,12,13]},"columns":[{"id":"Person","name":"Person","type":"character"},{"id":"Current Month Wins","name":"Current Month Wins","type":"numeric"},{"id":"Current Month Pts","name":"Current Month Pts","type":"numeric"},{"id":"Rank","name":"Rank","type":"numeric"}],"dataKey":"e3eed11b241e7b326d191181e6a3a99a"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="all-time-results" class="section level1" number="4">
 <h1><span class="header-section-number">4</span> All Time Results</h1>
@@ -3543,12 +3549,13 @@ margin-left: 0 !important;
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  altered_full,</span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">columns =</span> <span class="fu">list</span>(</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">person =</span> <span class="fu">colDef</span>(</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">sticky =</span> <span class="st">&quot;left&quot;</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>   )</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2ea95a26ad9f911ba935" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2ea95a26ad9f911ba935">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Brody","Nick","Magon","Hoonie","Gus","Jason","Kevin","Conner","Kaivan","Nate"],"September Wins":[4,3,3,2,2,2,1,1,1,1],"September Points":[602,534,507,518,474,473,520,506,457,453],"October Wins":[1,3,1,2,4,1,4,2,1,1],"October Points":[533,567,479,546,544,509,559,460,496,408],"November Wins":[5,1,2,3,3,0,2,3,5,1],"November Points":[748,652,559,610,658,408,575,522,801,539]},"columns":[{"id":"person","name":"person","type":"character","sticky":"left"},{"id":"September Wins","name":"September Wins","type":"numeric"},{"id":"September Points","name":"September Points","type":"numeric"},{"id":"October Wins","name":"October Wins","type":"numeric"},{"id":"October Points","name":"October Points","type":"numeric"},{"id":"November Wins","name":"November Wins","type":"numeric"},{"id":"November Points","name":"November Points","type":"numeric"}],"dataKey":"c608102f48bf832156bcbeb051aa8715"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">name =</span> <span class="st">&quot;Person&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">sticky =</span> <span class="st">&quot;left&quot;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>   )</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4aad7aa0dac6b2c09dc1" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4aad7aa0dac6b2c09dc1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"person":["Nate","Cuyler","Conner","Lin","Nick","Farshad","Kaivan","Brody","Magon","Hoonie","Phil","Kevin","Gus","Dallen"],"September Wins":[3,3,3,3,3,2,2,2,2,2,2,1,0,0],"September Points":[515,494,493,465,443,501,489,474,440,399,307,369,351,334],"October Wins":[1,0,1,0,0,0,1,1,0,0,1,1,0,1],"October Points":[146,107,151,102,111,127,111,133,99,80,132,140,70,110]},"columns":[{"id":"person","name":"Person","type":"character","sticky":"left"},{"id":"September Wins","name":"September Wins","type":"numeric"},{"id":"September Points","name":"September Points","type":"numeric"},{"id":"October Wins","name":"October Wins","type":"numeric"},{"id":"October Points","name":"October Points","type":"numeric"}],"dataKey":"275c8c3d8a447029748246309fbb9c48"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 

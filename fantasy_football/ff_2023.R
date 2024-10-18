@@ -3,22 +3,29 @@ library(pins)
 
 snapdragon::sd_board_register("prod")
 
-previous_data <- pin_get("results_pin_2023","rsconnect")
+#previous_data <- pin_get("results_pin_2023","rsconnect")
 
-# 2023 Season -------------------------------------------------------------
+previous_data <- pin_get("results_pin_2024","rsconnect")
+
+
+# 2024 Season -------------------------------------------------------------
 
 league_setup <- tribble(
-  ~person,  ~dues_paid, ~monthly_motivosity_particpant,
-  "Brody",  TRUE      , TRUE,
-  "Nick",   TRUE      , TRUE,
-  "Magon",  TRUE      , TRUE,
-  "Hoonie", FALSE     , FALSE,
-  "Gus",    TRUE     , TRUE,
-  "Jason",  TRUE      , FALSE,
-  "Kevin",  TRUE      , TRUE,
-  "Conner", TRUE     , TRUE,
-  "Kaivan", TRUE      , TRUE,
-  "Nate",   FALSE     , TRUE
+  ~person,    ~dues_paid, ~monthly_motivosity_particpant,
+  "Brody",    TRUE       , TRUE,
+  "Phil",     TRUE       , TRUE,
+  "Kevin",    TRUE       , TRUE,
+  "Cuyler",   TRUE       , TRUE,
+  "Magon",    TRUE       , TRUE,
+  "Kaivan",   TRUE       , TRUE,
+  "Gus",      TRUE       , TRUE,
+  "Conner",   FALSE      , TRUE,
+  "Nick",     TRUE       , TRUE,
+  "Nate",     TRUE       , TRUE,
+  "Farshad",  TRUE       , TRUE,
+  "Lin",      TRUE       , TRUE,
+  "Dallen",   FALSE      , FALSE,
+  "Hoonie",   FALSE      , TRUE
 )
 
 motivosity_participants <- league_setup %>% filter(monthly_motivosity_particpant  == TRUE) %>% pull(person)
@@ -26,40 +33,38 @@ motivosity_participants <- league_setup %>% filter(monthly_motivosity_particpant
 
 
 fantasy_scores <- tribble(
-  ~person,   ~month, ~tot_wins,  ~tot_pts, ~motivosity_paid,     # ~wins_september, ~wins_october, ~pts_september, ~pts_october,
+  ~person,   ~month, ~tot_wins,  ~tot_pts, ~motivosity_paid,  
   # September
-  "Brody",        9,         4,       602,            TRUE,     #               3,               4,             530,            1000, 
-  "Nick",         9,         3,       534,            TRUE,     #                3,               6,             527,            1008, 
-  "Magon",        9,         3,       507,            TRUE,      #                3,               6,             518,            1086, 
-  "Hoonie",       9,         2,       518,            FALSE,      #               3,               6,             498,             991, 
-  "Gus",          9,         2,       474,            TRUE,      #                2,               3,             508,             930, 
-  "Jason",        9,         2,       473,            TRUE,      #                2,               5,             485,             983, 
-  "Kevin",        9,         1,       520,            TRUE,      #                1,               2,             408,             854, 
-  "Conner",       9,         1,       506,            TRUE,      #               0,               3,             523,            1157, 
-  "Kaivan",       9,         1,       457,            TRUE,
-  "Nate",         9,         1,       453,            TRUE,
+  "Brody",        9,         2,         474,            TRUE,
+  "Phil",         9,         2,         307,            FALSE,
+  "Kevin",        9,         1,         369,            TRUE,
+  "Cuyler",       9,         3,         494,            TRUE,
+  "Magon",        9,         2,         440,            FALSE,
+  "Kaivan",       9,         2,         489,            TRUE,
+  "Gus",          9,         0,         351,            FALSE,
+  "Conner",       9,         3,         493,            FALSE,
+  "Nick",         9,         3,         443,            TRUE,
+  "Nate",         9,         3,         515,            FALSE,
+  "Farshad",      9,         2,         501,            TRUE,
+  "Lin",          9,         3,         465,            TRUE,
+  "Dallen",       9,         0,         334,            FALSE,
+  "Hoonie",       9,         2,         399,            FALSE,
+  
   # Oct Example               
-  "Brody",        10,        5,       1135,            TRUE,       #               3,               4,             530,            1000, 
-  "Nick",         10,        6,       1101,            TRUE,      #                3,               6,             527,            1008, 
-  "Magon",        10,        4,        986,            TRUE,      #                3,               6,             518,            1086, 
-  "Hoonie",       10,        4,       1064,            FALSE,      #               3,               6,             498,             991, 
-  "Gus",          10,        6,       1018,            TRUE,      #                2,               3,             508,             930, 
-  "Jason",        10,        3,        982,            TRUE,      #                2,               5,             485,             983, 
-  "Kevin",        10,        5,       1079,            TRUE,      #                1,               2,             408,             854, 
-  "Conner",       10,        3,        966,            TRUE,      #               0,               3,             523,            1157, 
-  "Kaivan",       10,        2,        953,            TRUE,
-  "Nate",         10,        2,        861,            TRUE,
-  # # Nov Example    
-  "Brody",        11,        10,       1883,            TRUE,       #               3,               4,             530,            1000, 
-  "Nick",         11,        7,       1753,            FALSE,      #                3,               6,             527,            1008, 
-  "Magon",        11,        6,       1545,            FALSE,      #                3,               6,             518,            1086, 
-  "Hoonie",       11,        7,       1674,            FALSE,      #               3,               6,             498,             991, 
-  "Gus",          11,        9,       1676,            TRUE,      #                2,               3,             508,             930, 
-  "Jason",        11,        3,       1390,            FALSE,      #                2,               5,             485,             983, 
-  "Kevin",        11,        7,       1654,            FALSE,      #                1,               2,             408,             854, 
-  "Conner",       11,        6,       1488,            FALSE,      #               0,               3,             523,            1157, 
-  "Kaivan",       11,        7,       1754,            TRUE,
-  "Nate",         11,        3,       1400,            FALSE,
+  "Brody",       10,         3,         607,            FALSE,
+  "Phil",        10,         3,         439,            FALSE,
+  "Kevin",       10,         2,         509,            FALSE,
+  "Cuyler",      10,         3,         601,            FALSE,
+  "Magon",       10,         2,         539,            FALSE,
+  "Kaivan",      10,         3,         600,            FALSE,
+  "Gus",         10,         0,         421,            FALSE,
+  "Conner",      10,         4,         644,            FALSE,
+  "Nick",        10,         3,         554,            FALSE,
+  "Nate",        10,         4,         661,            FALSE,
+  "Farshad",     10,         2,         628,            FALSE,
+  "Lin",         10,         3,         567,            FALSE,
+  "Dallen",      10,         1,         444,            FALSE,
+  "Hoonie",      10,         2,         479,            FALSE
 )
 
 #month_result_list <- list()
@@ -97,6 +102,11 @@ current_standings <- ranked_months %>%
     names_from = rank,
     values_from = c(tot_wins, tot_pts)
   ) %>% 
+  # Uncomment the transmute after September
+  #rename(
+  #  current_month_wins = tot_wins_1,
+  #  current_month_pts = tot_pts_1
+  #) %>% 
   transmute(
     person,
     current_month_wins = tot_wins_1 - tot_wins_2,
@@ -164,7 +174,7 @@ full_fantasy_results <- Reduce(join_dataframes, altered_list)
 
 # 4) Update on paid monthly motivosity
 monthly_motivosity_paid <- fantasy_scores %>% 
-  filter(month <= month(today())) %>% 
+  filter(month < month(today())) %>% 
   filter(person %in% motivosity_participants) %>% 
   mutate(month = month.name[month]) %>% 
   select(person, month, motivosity_paid) %>% 
@@ -182,8 +192,8 @@ fantasy_list <- list(
   "league_setup" = league_setup
 )
 
-
-pins::pin(fantasy_list, "results_pin_2023", board = "rsconnect")
+# Need to fix this pin
+pins::pin(fantasy_list, "results_pin_2024", board = "rsconnect")
 
 
 
